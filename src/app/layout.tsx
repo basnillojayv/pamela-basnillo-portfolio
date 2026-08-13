@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       "Social media design, content strategy, SOPs and backend systems for growing brands.",
     url: siteUrl,
     siteName: "Pamela Basnillo",
-    images: [{ url: "/pamela-blossom.webp", width: 1200, height: 1800 }],
+    images: [{ url: "/hero-intro-poster.webp", width: 1080, height: 1350 }],
     locale: "en_PH",
     type: "website",
   },
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: "Pamela Basnillo — Creative marketing & virtual support strategist",
     description:
       "Social media design, content strategy, SOPs and backend systems for growing brands.",
-    images: ["/pamela-blossom.webp"],
+    images: ["/hero-intro-poster.webp"],
   },
 };
 

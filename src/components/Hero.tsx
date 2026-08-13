@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { disciplines, profile } from "@/lib/content";
+import HeroMedia from "./HeroMedia";
 
 const toneClass = {
   blossom: "bg-blossom",
@@ -81,25 +82,8 @@ export default function Hero() {
 
           {/* --- Portrait --------------------------------------------- */}
           <div className="animate-settle relative mx-auto w-full max-w-[22rem] lg:max-w-none" style={{ animationDelay: "160ms" }}>
-            <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] border border-ink bg-blossom-deep">
-              <Image
-                src="/pamela-blossom.webp"
-                alt="Pamela Basnillo standing under cherry blossoms in a red cardigan, arms out"
-                fill
-                priority
-                sizes="(min-width: 1024px) 23rem, (min-width: 640px) 22rem, 90vw"
-                className="object-cover object-[50%_25%]"
-              />
-            </div>
+            <HeroMedia />
 
-            <Image
-              src="/doodle/sparkle.webp"
-              alt=""
-              width={64}
-              height={64}
-              aria-hidden
-              className="doodle-ink pointer-events-none absolute -right-3 -top-5 z-sticker h-12 w-12 object-contain sm:-right-6 sm:h-16 sm:w-16"
-            />
             <Image
               src="/motif/blossom.webp"
               alt=""
