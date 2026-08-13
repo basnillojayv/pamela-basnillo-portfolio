@@ -57,7 +57,7 @@ export default function Lightbox({ images, index, onClose, onNavigate, label }: 
       onClick={(e) => {
         if (e.target === dialogRef.current) onClose();
       }}
-      className="fixed inset-0 z-[70] m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-ink/92 backdrop:backdrop-blur-sm"
+      className="fixed inset-0 z-dialog m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-ink/92 backdrop:backdrop-blur-sm"
     >
       {current && index !== null && (
         <div className="flex h-full w-full flex-col gap-4 p-4 pt-16 sm:p-8 sm:pt-20">

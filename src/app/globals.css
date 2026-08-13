@@ -29,12 +29,13 @@
   --ease-out-quart: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* ---- Layering ------------------------------------------------------ */
-  --z-base: 0;
-  --z-sticker: 10;
-  --z-nav: 40;
-  --z-overlay: 60;
-  --z-dialog: 70;
+  /* ---- Layering ------------------------------------------------------
+     Named so components say `z-nav` / `z-dialog` instead of a bare number.
+     Tailwind v4 reads the --z-index-* namespace to build the utilities. */
+  --z-index-sticker: 10;
+  --z-index-nav: 40;
+  --z-index-overlay: 60;
+  --z-index-dialog: 70;
 }
 
 @layer base {

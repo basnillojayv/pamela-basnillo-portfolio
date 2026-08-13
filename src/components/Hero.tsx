@@ -98,7 +98,7 @@ export default function Hero() {
               width={64}
               height={64}
               aria-hidden
-              className="doodle-ink pointer-events-none absolute -right-3 -top-5 z-10 h-12 w-12 object-contain sm:-right-6 sm:h-16 sm:w-16"
+              className="doodle-ink pointer-events-none absolute -right-3 -top-5 z-sticker h-12 w-12 object-contain sm:-right-6 sm:h-16 sm:w-16"
             />
             <Image
               src="/motif/blossom.webp"
@@ -106,7 +106,7 @@ export default function Hero() {
               width={90}
               height={90}
               aria-hidden
-              className="pointer-events-none absolute -bottom-6 -left-5 z-10 h-16 w-16 -rotate-12 object-contain sm:h-20 sm:w-20"
+              className="pointer-events-none absolute -bottom-6 -left-5 z-sticker h-16 w-16 -rotate-12 object-contain sm:h-20 sm:w-20"
             />
           </div>
         </div>

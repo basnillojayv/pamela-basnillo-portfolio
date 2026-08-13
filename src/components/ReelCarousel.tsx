@@ -230,16 +230,16 @@ export default function ReelCarousel({ reels, onOpen, interval = 4200 }: Props) 
                 className="group flex h-11 w-6 items-center justify-center"
               >
                 <span className="sr-only">Go to reel {i + 1}</span>
+                {/* scaleX rather than a width transition — same pill, no
+                    layout work. ink/55 rather than ink/30 because these
+                    carry position state, so WCAG 1.4.11 wants 3:1 against
+                    the blossom field and /30 only managed 1.88:1. */}
                 <span
                   aria-hidden
-                  /* ink/55 rather than ink/30: these dots carry position
-                     state, so WCAG 1.4.11 wants 3:1 against the blossom
-                     field and /30 only managed 1.88:1. */
-                  className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ease-[var(--ease-out-quart)] ${
-                    i === active
-                      ? "w-6 bg-ink"
-                      : "w-1.5 bg-ink/55 group-hover:bg-ink/80"
+                  className={`block h-1.5 w-6 rounded-full transition-[transform,background-color] duration-300 ease-[var(--ease-out-quart)] ${
+                    i === active ? "bg-ink" : "bg-ink/55 group-hover:bg-ink/80"
                   }`}
+                  style={{ transform: `scaleX(${i === active ? 1 : 0.25})` }}
                 />
               </button>
             </li>

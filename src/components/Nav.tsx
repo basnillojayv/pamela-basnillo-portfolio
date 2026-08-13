@@ -18,7 +18,7 @@ export default function Nav() {
   }, [open]);
 
   return (
-    <header className="pointer-events-none sticky top-0 z-40 px-3 pt-3 sm:px-5 sm:pt-5">
+    <header className="pointer-events-none sticky top-0 z-nav px-3 pt-3 sm:px-5 sm:pt-5">
       <nav
         aria-label="Primary"
         className="pointer-events-auto mx-auto flex max-w-6xl items-center gap-4 rounded-full border border-ink bg-page/95 px-4 py-2.5 backdrop-blur-[2px] sm:px-6 sm:py-3"
