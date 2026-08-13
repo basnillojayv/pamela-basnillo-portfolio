@@ -232,10 +232,13 @@ export default function ReelCarousel({ reels, onOpen, interval = 4200 }: Props) 
                 <span className="sr-only">Go to reel {i + 1}</span>
                 <span
                   aria-hidden
+                  /* ink/55 rather than ink/30: these dots carry position
+                     state, so WCAG 1.4.11 wants 3:1 against the blossom
+                     field and /30 only managed 1.88:1. */
                   className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ease-[var(--ease-out-quart)] ${
                     i === active
                       ? "w-6 bg-ink"
-                      : "w-1.5 bg-ink/30 group-hover:bg-ink/60"
+                      : "w-1.5 bg-ink/55 group-hover:bg-ink/80"
                   }`}
                 />
               </button>
