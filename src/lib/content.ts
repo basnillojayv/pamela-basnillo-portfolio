@@ -19,7 +19,7 @@ export const about = {
   lead: "I help brands grow through strategic content, streamlined systems, and design that carries its own weight.",
   body: [
     "My background runs across social media marketing, graphic design, client coordination, and virtual support — which means I sit in the gap between the creative side and the operations side, and I’m comfortable on both.",
-    "Most of the brands I work with have good ideas and no structure around them. I turn those ideas into something you can actually run: a content plan with a calendar behind it, a workflow someone else can pick up, a set of assets that look like they belong together.",
+    "When ideas need structure around them, I build it: a content plan with a calendar behind it, a workflow someone else can pick up, a set of assets that look like they belong together.",
   ],
   practice: [
     "Scroll-stopping content built on a strategy, not a trend",
@@ -49,7 +49,7 @@ export const services = [
   {
     title: "Systems & operations",
     icon: "/icon/systems.webp",
-    items: ["Airtable, ClickUp & Notion", "SOP creation", "Workflow organisation", "Project coordination"],
+    items: ["Airtable, ClickUp & Notion", "SOP creation", "Workflow organization", "Project coordination"],
   },
   {
     title: "Virtual assistance",
@@ -59,7 +59,7 @@ export const services = [
   {
     title: "AI & content support",
     icon: "/icon/ai.webp",
-    items: ["AI-assisted content creation", "Content repurposing", "Research assistance", "Productivity optimisation"],
+    items: ["AI-assisted content creation", "Content repurposing", "Research assistance", "Productivity optimization"],
   },
 ];
 
@@ -147,9 +147,9 @@ const arkAlts = [
   "Team announcement post: agents on a lilac stage set, agency name in cut-out type",
   "Second team announcement in the same lilac cut-out series",
   "Third team announcement in the same lilac cut-out series",
-  "Top Producers, June 2026 — three advisers on a soft gradient",
+  "Top Producers, June 2026 — three advisors on a soft gradient",
   "MDRT 2026 qualifier feature with Japan travel motifs",
-  "Top Producers, July 2025 — two advisers on a violet gradient",
+  "Top Producers, July 2025 — two advisors on a violet gradient",
   "Will & legacy planning seminar invite with speakers, agenda and venue",
   "Chile qualifiers congratulations post with plane and globe illustrations",
   "Funky Loud Awards Night 2026 invite in acid green and magenta",
@@ -199,7 +199,7 @@ export const collections: Collection[] = [
     title: "Infinity Ark, Singapore",
     meta: "Social media design · Ongoing client",
     blurb:
-      "Recognition posts, seminar invites and event announcements for a Singapore financial advisory team. High volume, fast turnaround, and a house style that holds across every one of them.",
+      "Recognition posts, seminar invites and event announcements for a Singapore financial advisory team, held to one house style across the whole run.",
     field: "sky",
     layout: "portrait",
     images: arkAlts.map((alt, i) => ({
@@ -229,7 +229,7 @@ export const collections: Collection[] = [
     title: "Short-form video",
     meta: "Reels · TikTok · Stories",
     blurb:
-      "Vertical edits for property tours, restaurant launches and beauty services — cut for sound off, captioned, and paced to hold past the first two seconds.",
+      "Vertical edits for property tours, restaurant launches and beauty services, captioned so they read with the sound off.",
     field: "blossom",
     layout: "reel",
     // Each poster was matched to its clip by comparing frames rather than
@@ -247,13 +247,13 @@ export const collections: Collection[] = [
     title: "Brand identity",
     meta: "Logo · Palette · Type · Mood",
     blurb:
-      "A full identity board for Be A Blessing: mark, colour palette, typeface and mood board, delivered as one document a client can hand to anyone.",
+      "A full identity board for Be A Blessing: mark, color palette, typeface and mood board, in one document.",
     field: "sage",
     layout: "board",
     images: [
       {
         src: "/work/brand-board.webp",
-        alt: "Be A Blessing identity board: a dove-and-olive-branch mark, an olive and sage colour palette, the Kiona typeface specimen and a mood board of greens and neutrals",
+        alt: "Be A Blessing identity board: a dove-and-olive-branch mark, an olive and sage color palette, the Kiona typeface specimen and a mood board of greens and neutrals",
         w: 1000,
         h: 1414,
       },

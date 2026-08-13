@@ -79,8 +79,8 @@ export default function Work() {
         <h2 className="text-[clamp(2.25rem,6vw,3.25rem)]">Selected work</h2>
         <p className="mt-5 max-w-[58ch] text-[1.05rem] leading-[1.7] text-ink-soft">
           Designs made for businesses across wellness, beauty, coaching, real
-          estate, food, retail and personal branding. Tap any image to see it
-          full size.
+          estate, food, retail and personal branding. Open anything here to see
+          it full size.
         </p>
       </div>
 
@@ -111,9 +111,6 @@ export default function Work() {
                     <p className="mt-2 font-hand text-[1.2rem] text-coral">{c.meta}</p>
                     <p className="mt-4 max-w-[46ch] text-[1rem] leading-[1.68] text-ink-soft">
                       {c.blurb}
-                    </p>
-                    <p className="mt-5 text-[0.9rem] text-ink-soft">
-                      {c.images.length} {c.images.length === 1 ? "piece" : "pieces"}
                     </p>
                   </div>
                 </div>

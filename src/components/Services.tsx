@@ -9,8 +9,8 @@ export default function Services() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <h2 className="text-[clamp(2.25rem,6vw,3.25rem)]">Services</h2>
           <p className="max-w-[42ch] text-[1.02rem] leading-relaxed text-ink-soft">
-            Six things I do. Most clients start with one and end up handing over
-            two or three once the first is running on its own.
+            Six things I take on — on their own, or together as one running
+            system.
           </p>
         </div>
 
