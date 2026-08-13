@@ -1,21 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { navLinks, profile } from "@/lib/content";
+import Logo from "./Logo";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
+  // A native <dialog> gives the full-screen menu focus trapping, inert
+  // background and Escape-to-close without hand-rolling any of it.
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (open && !dialog.open) {
+      dialog.showModal();
+      document.body.style.overflow = "hidden";
+    }
+    if (!open && dialog.open) dialog.close();
   }, [open]);
+
+  useEffect(() => () => {
+    document.body.style.overflow = "";
+  }, []);
+
+  // Teardown lives here rather than in the effect above because Escape is
+  // handled by the browser: it closes the dialog itself, so the effect's
+  // close branch never runs and the scroll lock stayed on.
+  const handleClose = () => {
+    setOpen(false);
+    document.body.style.overflow = "";
+    toggleRef.current?.focus();
+  };
 
   return (
     <header className="pointer-events-none sticky top-0 z-nav px-3 pt-3 sm:px-5 sm:pt-5">
@@ -25,15 +42,14 @@ export default function Nav() {
       >
         <a
           href="#top"
-          className="-my-2 flex min-h-11 items-center pr-2 font-display text-2xl leading-none tracking-tight sm:text-[1.75rem]"
-          style={{ fontVariationSettings: '"SOFT" 60, "WONK" 1, "opsz" 144' }}
+          className="-my-2 flex min-h-11 items-center pr-2 transition-opacity duration-200 hover:opacity-70"
         >
           <span className="sr-only">{profile.name} — home</span>
-          <span aria-hidden>PB</span>
+          <Logo markClassName="h-6 w-6 sm:h-7 sm:w-7" textClassName="text-[0.72rem] sm:text-[0.8rem]" />
         </a>
 
-        {/* py-3 -mx-* keeps each link a 44px-tall target — the desktop nav
-            is what tablets get, and those are touch. */}
+        {/* py-3 keeps each link a 44px-tall target — the desktop nav is what
+            tablets get, and those are touch. */}
         <ul className="mx-auto hidden items-center gap-4 text-[0.95rem] md:flex">
           {navLinks.map((l) => (
             <li key={l.href}>
@@ -59,57 +75,79 @@ export default function Nav() {
         </a>
 
         <button
+          ref={toggleRef}
           type="button"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpen(true)}
           aria-expanded={open}
-          aria-controls="mobile-nav"
+          aria-haspopup="dialog"
           className="ml-auto flex h-11 w-11 items-center justify-center rounded-full border border-ink transition-transform duration-150 ease-[var(--ease-out-quart)] active:scale-[0.94] md:hidden"
         >
-          <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
+          <span className="sr-only">Open menu</span>
           <span aria-hidden className="relative block h-3 w-4">
-            <span
-              className={`absolute left-0 block h-px w-full bg-ink transition-transform duration-200 ease-[var(--ease-out-quart)] ${
-                open ? "top-1.5 rotate-45" : "top-0"
-              }`}
-            />
-            <span
-              className={`absolute left-0 block h-px w-full bg-ink transition-transform duration-200 ease-[var(--ease-out-quart)] ${
-                open ? "top-1.5 -rotate-45" : "top-3"
-              }`}
-            />
+            <span className="absolute left-0 top-0 block h-px w-full bg-ink" />
+            <span className="absolute left-0 top-3 block h-px w-full bg-ink" />
           </span>
         </button>
       </nav>
 
-      {/* Mobile sheet */}
-      <div
-        id="mobile-nav"
-        hidden={!open}
-        className="pointer-events-auto mx-auto mt-2 max-w-6xl overflow-hidden rounded-3xl border border-ink bg-page md:hidden"
+      {/* Full-screen mobile menu */}
+      <dialog
+        ref={dialogRef}
+        aria-label="Menu"
+        onClose={handleClose}
+        className="menu-sheet pointer-events-auto fixed inset-0 m-0 h-full max-h-none w-full max-w-none bg-blossom p-0 text-ink backdrop:bg-ink/20 md:hidden"
       >
-        <ul className="divide-y divide-ink/15">
-          {navLinks.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="block px-6 py-4 text-lg"
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
-          <li>
+        <div className="flex h-full flex-col px-5 pb-10 pt-3">
+          <div className="flex items-center justify-between">
+            <Logo markClassName="h-6 w-6" textClassName="text-[0.72rem]" />
+            <button
+              type="button"
+              onClick={handleClose}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-ink transition-[background-color,transform] duration-200 ease-[var(--ease-out-quart)] hover:bg-page/50 active:scale-[0.94]"
+            >
+              <span className="sr-only">Close menu</span>
+              <svg width="17" height="17" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <path d="m3.5 3.5 9 9m0-9-9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+
+          {/* The links get the room the sheet affords: display-scale type,
+              one per line, sized as the primary thing on the screen. */}
+          <nav aria-label="Mobile" className="mt-auto">
+            <ul>
+              {navLinks.map((l, i) => (
+                <li key={l.href} className="border-b border-ink/15">
+                  <a
+                    href={l.href}
+                    onClick={handleClose}
+                    style={{ animationDelay: `${60 + i * 55}ms` }}
+                    className="animate-rise flex items-baseline gap-4 py-5 font-display text-[clamp(2.1rem,11vw,3rem)] leading-none tracking-[-0.028em]"
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="mt-auto pt-10">
             <a
               href={`mailto:${profile.email}`}
-              onClick={() => setOpen(false)}
-              className="block px-6 py-4 text-lg text-coral"
+              onClick={handleClose}
+              className="flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full border border-ink bg-ink px-6 text-[1rem] text-page transition-transform duration-200 ease-[var(--ease-out-quart)] active:scale-[0.98]"
             >
               Email me
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </a>
-          </li>
-        </ul>
-      </div>
+            <p className="mt-4 text-center text-[0.9rem] text-ink-soft">
+              {profile.phone} · {profile.location}
+            </p>
+          </div>
+        </div>
+      </dialog>
     </header>
   );
 }

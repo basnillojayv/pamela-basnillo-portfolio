@@ -1,16 +1,12 @@
 import { navLinks, profile } from "@/lib/content";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
     <footer className="bg-ink text-page">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:flex-row sm:items-end sm:justify-between sm:px-6 sm:py-14">
         <div>
-          <p
-            className="font-display text-3xl"
-            style={{ fontVariationSettings: '"SOFT" 60, "WONK" 1, "opsz" 144' }}
-          >
-            {profile.name}
-          </p>
+          <Logo markClassName="h-9 w-9" textClassName="text-[1.05rem]" />
           <p className="mt-2 max-w-[34ch] text-[0.95rem] leading-relaxed text-page/70">
             {profile.role} · {profile.location}
           </p>

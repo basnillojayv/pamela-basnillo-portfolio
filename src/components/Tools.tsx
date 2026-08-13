@@ -2,64 +2,69 @@ import Image from "next/image";
 import { toolGroups } from "@/lib/content";
 import Reveal from "./Reveal";
 
+/**
+ * Scatter offsets are hashed from the tool's own name rather than random,
+ * so the server and the client agree, the wall never reshuffles between
+ * renders, and nothing jumps on hydration. It looks hand-placed and
+ * behaves like a fixed layout.
+ */
+function scatter(name: string) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i += 1) {
+    hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+  }
+  return {
+    "--drift": `${(hash % 17) - 8}px`,
+    "--tilt": `${((hash >> 5) % 11) - 5}deg`,
+  } as React.CSSProperties;
+}
+
+const tools = toolGroups.flatMap((group) => group.tools);
+
 export default function Tools() {
   return (
-    <section aria-labelledby="tools-heading" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-      <div className="grid gap-10 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-16">
-        <div>
-          <h2 id="tools-heading" className="text-[clamp(1.9rem,4.5vw,2.5rem)]">
-            Tools I work in
-          </h2>
-          <p className="mt-4 max-w-[34ch] text-[1rem] leading-relaxed text-ink-soft">
-            Plus the whole of Google Workspace — Gmail, Calendar, Drive, Docs,
-            Sheets, Slides and Meet.
-          </p>
-          <Image
-            src="/tool/google-workspace.webp"
-            alt="Google Workspace"
-            width={220}
-            height={28}
-            className="mt-6 h-6 w-auto object-contain"
-          />
-        </div>
+    <section
+      aria-labelledby="tools-heading"
+      className="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 sm:py-20"
+    >
+      <h2 id="tools-heading" className="text-[clamp(1.9rem,4.5vw,2.5rem)]">
+        Tools I work in
+      </h2>
 
-        <div className="space-y-9">
-          {toolGroups.map((group) => (
-            <div key={group.label}>
-              <h3 className="font-sans text-[0.8125rem] font-semibold uppercase tracking-[0.14em] text-ink-soft">
-                {group.label}
-              </h3>
+      <p className="mx-auto mt-4 max-w-[46ch] text-[1rem] leading-relaxed text-ink-soft">
+        Plus the whole of Google Workspace — Gmail, Calendar, Drive, Docs,
+        Sheets, Slides and Meet.
+      </p>
 
-              {/* Equal cells give the rhythm; the per-logo height in
-                  content.ts evens the optical weight inside them. Heights sit
-                  in a 19–26px band derived from each mark's aspect ratio, so
-                  a square app icon and a long wordmark read as the same size
-                  without shrinking the wordmarks past legibility. */}
-              <Reveal
-                as="ul"
-                stagger={35}
-                className="mt-3 -mx-1 flex flex-wrap gap-y-0 sm:mx-0 sm:gap-x-1"
-              >
-                {group.tools.map((t) => (
-                  <li
-                    key={t.name}
-                    className="group flex h-16 w-1/3 items-center justify-center rounded-xl px-1 transition-colors duration-300 ease-[var(--ease-out-quart)] hover:bg-blossom/50 sm:w-[8.25rem] sm:px-2"
-                  >
-                    <Image
-                      src={t.src}
-                      alt={t.name}
-                      width={t.w * 2}
-                      height={t.h * 2}
-                      style={{ height: `${t.h / 16}rem`, width: "auto" }}
-                      className="max-w-full object-contain transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.07]"
-                    />
-                  </li>
-                ))}
-              </Reveal>
-            </div>
-          ))}
-        </div>
-      </div>
+      <Image
+        src="/tool/google-workspace.webp"
+        alt="Google Workspace"
+        width={242}
+        height={31}
+        className="mx-auto mt-6 h-7 w-auto object-contain"
+      />
+
+      {/* A wrapped flow with per-item drift rather than absolute placement:
+          it reads as scattered but can never overlap another logo or spill
+          out of the container at a narrow width. */}
+      <Reveal
+        as="ul"
+        stagger={30}
+        className="mt-11 flex flex-wrap items-center justify-center gap-x-2 gap-y-3 sm:gap-x-4 sm:gap-y-5"
+      >
+        {tools.map((t) => (
+          <li key={t.name} className="tool-chip" style={scatter(t.name)}>
+            <Image
+              src={t.src}
+              alt={t.name}
+              width={t.w * 2}
+              height={t.h * 2}
+              style={{ height: `${t.h / 16}rem`, width: "auto" }}
+              className="max-w-full object-contain"
+            />
+          </li>
+        ))}
+      </Reveal>
     </section>
   );
 }

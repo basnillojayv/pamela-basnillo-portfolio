@@ -147,6 +147,62 @@
       transform: rotate(calc(var(--tilt, 0deg) * 0.25)) translateY(-2px);
     }
   }
+
+  /* Full-screen mobile menu. It rises rather than fades so the direction
+     matches the button that opened it. */
+  .menu-sheet[open] {
+    animation: menu-in 0.32s var(--ease-out-quart);
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-sheet[open] {
+      animation: none;
+    }
+  }
+
+  /* One logo in the scattered tool wall. --drift and --tilt come from a
+     hash of the tool's name, so the scatter is stable across renders. */
+  .tool-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* A floor on the width keeps a 20px-tall wordmark from
+       sitting in a much smaller footprint than a square app icon,
+       which is what made the first pass read as ragged. */
+    min-width: 5.5rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 1rem;
+    transform: translateY(var(--drift, 0)) rotate(var(--tilt, 0deg));
+    transition:
+      transform 0.32s var(--ease-out-quart),
+      background-color 0.32s var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Pops forward and straightens up: the tilt resolves to level, so the
+       logo you're reading is the one shown correctly. */
+    .tool-chip:hover {
+      transform: translateY(calc(var(--drift, 0) - 6px)) rotate(0deg) scale(1.18);
+      background-color: color-mix(in oklab, var(--color-blossom) 62%, transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tool-chip {
+      transition: background-color 0.2s ease;
+    }
+
+    .tool-chip:hover {
+      transform: translateY(var(--drift, 0)) rotate(var(--tilt, 0deg));
+    }
+  }
 }
 
 /* Doodle assets are white-stroke PNGs; invert to draw them in ink. */
