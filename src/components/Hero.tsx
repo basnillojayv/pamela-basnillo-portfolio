@@ -10,7 +10,7 @@ const toneClass = {
 const entrances = [
   { href: "#work", title: "Work", copy: "Five collections, from a bakery rebrand to a Singapore advisory team.", icon: "/icon/design.webp", tone: "bg-blossom" },
   { href: "#services", title: "Services", copy: "What I take on: content, design, systems, backend support.", icon: "/icon/systems.webp", tone: "bg-sage" },
-  { href: "#contact", title: "Contact", copy: "Tell me what's on your plate. I'll tell you what I'd take off it.", icon: "/icon/assistance.webp", tone: "bg-sky" },
+  { href: "#contact", title: "Contact", copy: "Tell me what’s on your plate. I’ll tell you what I’d take off it.", icon: "/icon/assistance.webp", tone: "bg-sky" },
 ];
 
 export default function Hero() {

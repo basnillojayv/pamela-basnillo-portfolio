@@ -122,7 +122,7 @@ export type Collection = {
 };
 
 const bakeryAlts = [
-  "Father's Day post: a father lifting a laughing child, set against a deep red panel",
+  "Father’s Day post: a father lifting a laughing child, set against a deep red panel",
   "Birthday post: a slice of chocolate cake with raspberries, captioned Eat Cake",
   "Order-now post for a sharing quiche, shot from overhead on a wooden board",
   "Bao bun promo cut from torn paper, framed as a quick and easy meal",
@@ -155,9 +155,9 @@ const adAlts = [
   "Sunblock ad: a model in yellow holding the jar, captioned Chok-Chok Skin Goals",
   "Cooking oil ad in yellow and black sale type, captioned ₱18 per meal, less oil more laman",
   "Effervescent supplement ad with a four-point absorption breakdown",
-  "Bridal sunblock ad: a bride in a veil, captioned A bride's essential for perfect wedding day skin",
+  "Bridal sunblock ad: a bride in a veil, captioned A bride’s essential for perfect wedding day skin",
   "Sunscreen ad for athletes: a runner mid-stride on a blue field, captioned Sunarmor",
-  "Men's serum ad: a model in a black suit, captioned Boost your confidence",
+  "Men’s serum ad: a model in a black suit, captioned Boost your confidence",
 ];
 
 const reelAlts = [
