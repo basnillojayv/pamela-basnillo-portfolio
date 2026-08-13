@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { services } from "@/lib/content";
+import Reveal from "./Reveal";
 
 export default function Services() {
   return (
@@ -13,18 +14,24 @@ export default function Services() {
           </p>
         </div>
 
-        <ul className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Six siblings in one list — the case where a stagger is choreography
+            rather than a reflex. */}
+        <Reveal
+          as="ul"
+          stagger={55}
+          className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {services.map((s) => (
-            <li key={s.title} className="flex gap-4">
+            <li key={s.title} className="group flex gap-4">
               <Image
                 src={s.icon}
                 alt=""
                 width={56}
                 height={56}
-                className="mt-1 h-12 w-12 shrink-0 object-contain sm:h-14 sm:w-14"
+                className="mt-1 h-12 w-12 shrink-0 object-contain transition-transform duration-400 ease-[var(--ease-out-quart)] group-hover:-translate-y-0.5 group-hover:scale-105 sm:h-14 sm:w-14"
               />
               <div>
-                <h3 className="font-sans text-[1.05rem] font-semibold tracking-normal">
+                <h3 className="font-sans text-[1.05rem] font-semibold tracking-normal transition-colors duration-200 group-hover:text-coral">
                   {s.title}
                 </h3>
                 <ul className="mt-2.5 space-y-1.5 text-[0.98rem] leading-[1.55] text-ink-soft">
@@ -35,7 +42,7 @@ export default function Services() {
               </div>
             </li>
           ))}
-        </ul>
+        </Reveal>
       </div>
     </section>
   );

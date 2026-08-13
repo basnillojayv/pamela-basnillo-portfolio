@@ -17,10 +17,13 @@ export default function Footer() {
         </div>
 
         <nav aria-label="Footer">
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[0.95rem] text-page/80">
+          <ul className="-mx-2 flex flex-wrap items-center gap-x-3 text-[0.95rem] text-page/80">
             {navLinks.map((l) => (
               <li key={l.href}>
-                <a href={l.href} className="transition-colors duration-200 hover:text-page">
+                <a
+                  href={l.href}
+                  className="flex min-h-11 items-center rounded-lg px-2 underline decoration-transparent underline-offset-4 transition-[color,text-decoration-color] duration-200 hover:text-page hover:decoration-page/50"
+                >
                   {l.label}
                 </a>
               </li>
@@ -28,7 +31,7 @@ export default function Footer() {
             <li>
               <a
                 href={`mailto:${profile.email}`}
-                className="transition-colors duration-200 hover:text-page"
+                className="flex min-h-11 items-center rounded-lg px-2 underline decoration-transparent underline-offset-4 transition-[color,text-decoration-color] duration-200 hover:text-page hover:decoration-page/50"
               >
                 {profile.email}
               </a>

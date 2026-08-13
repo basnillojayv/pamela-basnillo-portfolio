@@ -25,21 +25,27 @@ export default function Nav() {
       >
         <a
           href="#top"
-          className="font-display text-2xl leading-none tracking-tight sm:text-[1.75rem]"
+          className="-my-2 flex min-h-11 items-center pr-2 font-display text-2xl leading-none tracking-tight sm:text-[1.75rem]"
           style={{ fontVariationSettings: '"SOFT" 60, "WONK" 1, "opsz" 144' }}
         >
           <span className="sr-only">{profile.name} — home</span>
           <span aria-hidden>PB</span>
         </a>
 
-        <ul className="mx-auto hidden items-center gap-7 text-[0.95rem] md:flex">
+        {/* py-3 -mx-* keeps each link a 44px-tall target — the desktop nav
+            is what tablets get, and those are touch. */}
+        <ul className="mx-auto hidden items-center gap-4 text-[0.95rem] md:flex">
           {navLinks.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
-                className="relative py-1 transition-colors duration-200 hover:text-coral"
+                className="group relative flex items-center px-3 py-3 transition-colors duration-200 hover:text-coral"
               >
                 {l.label}
+                <span
+                  aria-hidden
+                  className="absolute inset-x-3 bottom-2 h-px origin-left scale-x-0 bg-coral transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:scale-x-100"
+                />
               </a>
             </li>
           ))}
@@ -47,7 +53,7 @@ export default function Nav() {
 
         <a
           href={`mailto:${profile.email}`}
-          className="ml-auto hidden rounded-full border border-ink px-4 py-1.5 text-[0.9rem] transition-[background-color,color,transform] duration-200 ease-[var(--ease-out-quart)] hover:bg-ink hover:text-page active:scale-[0.97] md:ml-0 md:inline-block"
+          className="ml-auto hidden min-h-11 items-center rounded-full border border-ink px-4 py-2.5 text-[0.9rem] transition-[background-color,color,transform] duration-200 ease-[var(--ease-out-quart)] hover:bg-ink hover:text-page active:scale-[0.97] md:ml-0 md:inline-flex"
         >
           Email me
         </a>

@@ -67,49 +67,61 @@ export const toolGroups = [
   {
     label: "Design & video",
     tools: [
-      { name: "Canva", src: "/tool/canva.webp" },
-      { name: "Figma", src: "/tool/figma.webp" },
-      { name: "Adobe Illustrator", src: "/tool/illustrator.webp" },
-      { name: "Adobe Photoshop", src: "/tool/photoshop.webp" },
-      { name: "Adobe Lightroom", src: "/tool/lightroom.webp" },
-      { name: "CapCut", src: "/tool/capcut.webp" },
-      { name: "Descript", src: "/tool/descript.webp" },
+      { name: "Canva", src: "/tool/canva.webp", h: 26, w: 26 },
+      { name: "Figma", src: "/tool/figma.webp", h: 21, w: 73 },
+      { name: "Adobe Illustrator", src: "/tool/illustrator.webp", h: 26, w: 27 },
+      { name: "Adobe Photoshop", src: "/tool/photoshop.webp", h: 26, w: 27 },
+      { name: "Adobe Lightroom", src: "/tool/lightroom.webp", h: 26, w: 27 },
+      { name: "CapCut", src: "/tool/capcut.webp", h: 19, w: 94 },
+      { name: "Descript", src: "/tool/descript.webp", h: 26, w: 26 },
     ],
   },
   {
     label: "AI",
     tools: [
-      { name: "Claude", src: "/tool/claude.webp" },
-      { name: "ChatGPT", src: "/tool/chatgpt.webp" },
-      { name: "Gemini", src: "/tool/gemini.webp" },
-      { name: "Jasper", src: "/tool/jasper.webp" },
-      { name: "Midjourney", src: "/tool/midjourney.webp" },
+      { name: "Claude", src: "/tool/claude.webp", h: 20, w: 93 },
+      { name: "ChatGPT", src: "/tool/chatgpt.webp", h: 21, w: 72 },
+      { name: "Gemini", src: "/tool/gemini.webp", h: 20, w: 85 },
+      { name: "Jasper", src: "/tool/jasper.webp", h: 20, w: 82 },
+      { name: "Midjourney", src: "/tool/midjourney.webp", h: 25, w: 30 },
     ],
   },
   {
     label: "Sites & publishing",
     tools: [
-      { name: "WordPress", src: "/tool/wordpress.webp" },
-      { name: "Wix", src: "/tool/wix.webp" },
-      { name: "Framer", src: "/tool/framer.webp" },
-      { name: "Notion", src: "/tool/notion.webp" },
+      { name: "WordPress", src: "/tool/wordpress.webp", h: 26, w: 26 },
+      { name: "Wix", src: "/tool/wix.webp", h: 22, w: 56 },
+      { name: "Framer", src: "/tool/framer.webp", h: 21, w: 64 },
+      { name: "Notion", src: "/tool/notion.webp", h: 21, w: 60 },
     ],
   },
   {
     label: "Operations & scheduling",
     tools: [
-      { name: "Airtable", src: "/tool/airtable.webp" },
-      { name: "ClickUp", src: "/tool/clickup.webp" },
-      { name: "Asana", src: "/tool/asana.webp" },
-      { name: "Slack", src: "/tool/slack.webp" },
-      { name: "Metricool", src: "/tool/metricool.webp" },
-      { name: "HeyOrca", src: "/tool/heyorca.webp" },
-      { name: "HighLevel", src: "/tool/highlevel.webp" },
+      { name: "Airtable", src: "/tool/airtable.webp", h: 24, w: 40 },
+      { name: "ClickUp", src: "/tool/clickup.webp", h: 20, w: 79 },
+      { name: "Asana", src: "/tool/asana.webp", h: 24, w: 36 },
+      { name: "Slack", src: "/tool/slack.webp", h: 26, w: 26 },
+      { name: "Metricool", src: "/tool/metricool.webp", h: 19, w: 109 },
+      { name: "HeyOrca", src: "/tool/heyorca.webp", h: 20, w: 94 },
+      { name: "HighLevel", src: "/tool/highlevel.webp", h: 20, w: 85 },
     ],
   },
 ];
 
-export type WorkImage = { src: string; alt: string; w: number; h: number };
+export type WorkImage = {
+  src: string;
+  alt: string;
+  w: number;
+  h: number;
+  /**
+   * Optional silent MP4/WebM. When present the reel carousel plays it on
+   * loop and uses `src` as the poster; otherwise the poster shows alone.
+   * The Canva site only ever published poster frames, so these are empty
+   * until the real exports land in /public/work/.
+   */
+  video?: string;
+};
 
 export type Collection = {
   id: string;
@@ -227,6 +239,8 @@ export const collections: Collection[] = [
       alt,
       w: 406,
       h: 720,
+      // Add `video: "/work/reel-0N.mp4"` here once the exports exist and the
+      // carousel will loop them instead of showing the poster.
     })),
   },
   {

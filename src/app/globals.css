@@ -118,6 +118,18 @@
     font-size: 1.0625rem;
     line-height: 1.1;
     white-space: nowrap;
+    transform: rotate(var(--tilt, 0deg));
+    transition:
+      transform 0.35s var(--ease-out-quart),
+      background-color 0.25s ease;
+  }
+
+  /* Hovering straightens the sticker, like nudging one flat on a board.
+     Pointer-gated so a tap on mobile doesn't leave it stuck upright. */
+  @media (hover: hover) and (pointer: fine) {
+    .sticker-row:hover .sticker {
+      transform: rotate(calc(var(--tilt, 0deg) * 0.25)) translateY(-2px);
+    }
   }
 }
 

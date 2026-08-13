@@ -56,14 +56,14 @@ export default function Hero() {
             </p>
 
             <ul
-              className="animate-rise mt-8 flex flex-wrap gap-2.5"
+              className="sticker-row animate-rise mt-8 flex flex-wrap gap-2.5"
               style={{ animationDelay: "300ms" }}
             >
               {disciplines.map((d) => (
                 <li key={d.label}>
                   <span
                     className={`sticker ${toneClass[d.tone]}`}
-                    style={{ transform: `rotate(${d.rotate}deg)` }}
+                    style={{ "--tilt": `${d.rotate}deg` } as React.CSSProperties}
                   >
                     <Image
                       src={`/doodle/${d.doodle}.webp`}
@@ -124,7 +124,12 @@ export default function Hero() {
                 <span className={`flex h-12 w-12 items-center justify-center rounded-2xl border border-ink ${e.tone}`}>
                   <Image src={e.icon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
                 </span>
-                <h2 className="text-[1.4rem]">{e.title}</h2>
+                {/* Deliberately not a heading: these three link to sections
+                    whose real <h2>s appear below, and duplicating them here
+                    put "Work / Services / Contact" in the outline twice. */}
+                <p className="font-display text-[1.4rem] leading-tight tracking-[-0.028em]">
+                  {e.title}
+                </p>
                 <p className="text-[0.95rem] leading-relaxed text-ink-soft">{e.copy}</p>
                 <span className="mt-auto inline-flex items-center gap-1.5 pt-3 text-[0.9rem] font-medium text-coral">
                   Take a look

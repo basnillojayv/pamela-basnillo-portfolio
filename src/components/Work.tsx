@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { collections, type Collection } from "@/lib/content";
 import Lightbox from "./Lightbox";
+import ReelCarousel from "./ReelCarousel";
 import Reveal from "./Reveal";
 
 const fieldClass = {
@@ -37,6 +38,12 @@ function Gallery({
   collection: Collection;
   onOpen: (i: number) => void;
 }) {
+  // Reels are the one collection that behaves like playback rather than a
+  // contact sheet, so it gets a carousel instead of a grid.
+  if (collection.layout === "reel") {
+    return <ReelCarousel reels={collection.images} onOpen={onOpen} />;
+  }
+
   return (
     <Reveal className={`grid gap-3 sm:gap-4 ${gridClass[collection.layout]}`}>
       {collection.images.map((img, i) => (

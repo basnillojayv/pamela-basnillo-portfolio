@@ -75,12 +75,14 @@ export default function Contact() {
                   {d.href ? (
                     <a
                       href={d.href}
-                      className="mt-1.5 block text-[1.02rem] underline decoration-ink/30 underline-offset-4 transition-colors duration-200 hover:text-coral hover:decoration-coral"
+                      className="-mx-2 mt-0.5 flex min-h-11 items-center rounded-lg px-2 text-[1.02rem] underline decoration-ink/30 underline-offset-4 transition-[color,text-decoration-color,background-color] duration-200 hover:bg-page/50 hover:text-coral hover:decoration-coral"
                     >
                       {d.value}
                     </a>
                   ) : (
-                    <span className="mt-1.5 block text-[1.02rem]">{d.value}</span>
+                    <span className="mt-0.5 flex min-h-11 items-center text-[1.02rem]">
+                      {d.value}
+                    </span>
                   )}
                 </li>
               ))}
@@ -101,7 +103,7 @@ export default function Contact() {
             />
             <span
               className="sticker absolute -left-1 top-2 bg-page sm:-left-4"
-              style={{ transform: "rotate(-6deg)" }}
+              style={{ "--tilt": "-6deg" } as React.CSSProperties}
             >
               <Image src="/doodle/smiley.webp" alt="" width={18} height={18} className="doodle-ink h-[1.05em] w-[1.05em]" />
               Let&rsquo;s talk

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { about } from "@/lib/content";
+import Reveal from "./Reveal";
 
 export default function About() {
   return (
@@ -21,14 +22,14 @@ export default function About() {
           <h3 className="mt-10 font-sans text-[0.95rem] font-semibold tracking-normal text-ink">
             What that looks like in practice
           </h3>
-          <ul className="mt-4 max-w-[58ch] space-y-3">
+          <Reveal as="ul" stagger={60} className="mt-4 max-w-[58ch] space-y-3">
             {about.practice.map((item) => (
               <li key={item} className="flex gap-3 text-[1.02rem] leading-[1.6] text-ink-soft">
                 <span aria-hidden className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-coral" />
                 {item}
               </li>
             ))}
-          </ul>
+          </Reveal>
         </div>
 
         {/* The line she closes every conversation with, given the room it

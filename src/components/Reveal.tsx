@@ -7,6 +7,12 @@ type Props = {
   className?: string;
   /** Delay between each direct child, in ms. */
   stagger?: number;
+  /**
+   * Element to render. Staggered content is usually a list, and wrapping
+   * `<li>`s in a `<div>` would strip the list semantics a screen reader
+   * announces ("list, 6 items"), so callers pass `as="ul"`.
+   */
+  as?: "div" | "ul" | "ol";
 };
 
 /**
@@ -19,8 +25,13 @@ type Props = {
  * hidden state is only applied when an IntersectionObserver exists to
  * take it back off again.
  */
-export default function Reveal({ children, className, stagger = 45 }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+export default function Reveal({
+  children,
+  className,
+  stagger = 45,
+  as: Tag = "div",
+}: Props) {
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const node = ref.current;
@@ -64,12 +75,12 @@ export default function Reveal({ children, className, stagger = 45 }: Props) {
   }, []);
 
   return (
-    <div
-      ref={ref}
+    <Tag
+      ref={ref as React.Ref<HTMLDivElement & HTMLUListElement & HTMLOListElement>}
       className={className}
       style={{ "--reveal-stagger": `${stagger}ms` } as React.CSSProperties}
     >
       {children}
-    </div>
+    </Tag>
   );
 }
