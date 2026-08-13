@@ -43,12 +43,27 @@
     border-color: var(--color-ink);
   }
 
+  /* Everything on the page is sized in rem or in units derived from it —
+     type, spacing, icon boxes, the 72rem container — so raising the root
+     size scales type, imagery and column width together by the same 15%.
+     Media-query rem stays pegged to 16px, so the breakpoints don't move
+     and the layout still switches at the same viewport widths. */
   html {
+    /* Also on the root: with it only on <body>, the document element still
+       reported 2px of scrollable width at 320px. `clip` leaves sticky
+       positioning intact where `hidden` would break it. */
+    overflow-x: clip;
+    font-size: 115%;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
+    /* `clip`, not `hidden`: it stops the carousel's full-bleed negative
+       margin from rounding into a 2px horizontal scrollbar on narrow
+       screens, without turning the body into a scroll container and
+       breaking the sticky nav. */
+    overflow-x: clip;
     background: var(--color-page);
     color: var(--color-ink);
     font-family: var(--font-sans);

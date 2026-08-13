@@ -115,10 +115,8 @@ export type WorkImage = {
   w: number;
   h: number;
   /**
-   * Optional silent MP4/WebM. When present the reel carousel plays it on
-   * loop and uses `src` as the poster; otherwise the poster shows alone.
-   * The Canva site only ever published poster frames, so these are empty
-   * until the real exports land in /public/work/.
+   * Optional silent MP4. When present the reel carousel loops it and uses
+   * `src` as the poster; otherwise the poster shows alone.
    */
   video?: string;
 };
@@ -234,13 +232,14 @@ export const collections: Collection[] = [
       "Vertical edits for property tours, restaurant launches and beauty services — cut for sound off, captioned, and paced to hold past the first two seconds.",
     field: "blossom",
     layout: "reel",
+    // Each poster was matched to its clip by comparing frames rather than
+    // trusting the order they came down in.
     images: reelAlts.map((alt, i) => ({
       src: `/work/reel-0${i + 1}.webp`,
+      video: `/work/reel-0${i + 1}.mp4`,
       alt,
       w: 406,
       h: 720,
-      // Add `video: "/work/reel-0N.mp4"` here once the exports exist and the
-      // carousel will loop them instead of showing the poster.
     })),
   },
   {

@@ -22,6 +22,55 @@ type Props = {
  * Items render a looping muted <video> when one is supplied and fall back
  * to the poster frame otherwise.
  */
+/**
+ * A single looping reel.
+ *
+ * Nothing downloads until the clip is actually scrolled near — five
+ * autoplaying videos eagerly loading would cost several megabytes before a
+ * visitor has even reached the section. Playback follows visibility, so
+ * off-screen clips pause instead of burning battery, and the poster frame
+ * covers the gap on any device that refuses to autoplay.
+ */
+function ReelVideo({ src, poster, alt }: { src: string; poster: string; alt: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!video.src) video.src = src;
+          video.play().catch(() => {
+            /* autoplay refused — the poster stays, which is a fine fallback */
+          });
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, [src]);
+
+  return (
+    <video
+      ref={ref}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-label={alt}
+      className="h-full w-full object-cover"
+    />
+  );
+}
+
 export default function ReelCarousel({ reels, onOpen, interval = 4200 }: Props) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [active, setActive] = useState(0);
@@ -156,17 +205,7 @@ export default function ReelCarousel({ reels, onOpen, interval = 4200 }: Props) 
               className="group relative block aspect-[9/16] w-full overflow-hidden rounded-2xl border border-ink transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-1 active:scale-[0.99]"
             >
               {reel.video ? (
-                <video
-                  src={reel.video}
-                  poster={reel.src}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  aria-label={reel.alt}
-                  className="h-full w-full object-cover"
-                />
+                <ReelVideo src={reel.video} poster={reel.src} alt={reel.alt} />
               ) : (
                 <Image
                   src={reel.src}

@@ -50,7 +50,7 @@ export default function Tools() {
                       alt={t.name}
                       width={t.w * 2}
                       height={t.h * 2}
-                      style={{ height: `${t.h}px`, width: "auto" }}
+                      style={{ height: `${t.h / 16}rem`, width: "auto" }}
                       className="max-w-full object-contain transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.07]"
                     />
                   </li>

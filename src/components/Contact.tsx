@@ -43,7 +43,7 @@ export default function Contact() {
       <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-end lg:gap-16">
           <div>
-            <h2 className="max-w-[14ch] text-[clamp(2.5rem,8vw,4.5rem)]">
+            <h2 className="max-w-[14ch] text-[clamp(2.25rem,7.2vw,4rem)]">
               Work with me
             </h2>
             <p className="mt-6 max-w-[46ch] text-[1.08rem] leading-[1.7] text-ink-soft">

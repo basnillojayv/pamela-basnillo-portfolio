@@ -31,7 +31,7 @@ export default function Hero() {
             </p>
 
             <h1
-              className="animate-rise mt-1 text-[clamp(2.9rem,10.5vw,5.5rem)]"
+              className="animate-rise mt-1 text-[clamp(2.6rem,9.5vw,4.9rem)]"
               style={{ animationDelay: "100ms" }}
             >
               Pamela
