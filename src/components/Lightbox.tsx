@@ -65,14 +65,32 @@ export default function Lightbox({ images, index, onClose, onNavigate, label }: 
               the viewport allows without depending on the intrinsic size
               next/image happens to serve. */}
           <div className="relative min-h-0 w-full flex-1">
-            <Image
-              key={current.src}
-              src={current.src}
-              alt={current.alt}
-              fill
-              sizes="(min-width: 640px) 80vw, 95vw"
-              className="object-contain"
-            />
+            {current.video ? (
+              // A reel that is looping in the grid should keep looping when
+              // enlarged; opening it onto a frozen poster read as broken.
+              // Controls appear here because this is the deliberate view.
+              <video
+                key={current.video}
+                src={current.video}
+                poster={current.src}
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls
+                aria-label={current.alt}
+                className="absolute inset-0 h-full w-full object-contain"
+              />
+            ) : (
+              <Image
+                key={current.src}
+                src={current.src}
+                alt={current.alt}
+                fill
+                sizes="(min-width: 640px) 80vw, 95vw"
+                className="object-contain"
+              />
+            )}
           </div>
 
           <p className="mx-auto max-w-[62ch] text-center text-[0.92rem] leading-relaxed text-page/80">

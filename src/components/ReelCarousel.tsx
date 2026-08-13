@@ -217,14 +217,21 @@ export default function ReelCarousel({ reels, onOpen, interval = 4200 }: Props) 
                 />
               )}
 
-              {/* Play affordance — these read as video even while they are
-                  still poster frames. */}
+              {/* The clip is already looping, so a play triangle would read
+                  as a control that does something other than what clicking
+                  actually does. An expand glyph names the real action. */}
               <span
                 aria-hidden
                 className="pointer-events-none absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full border border-page/70 bg-ink/45 text-page backdrop-blur-[2px] transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:scale-110"
               >
-                <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden>
-                  <path d="M1 1.2v11.6L11 7z" fill="currentColor" />
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                  <path
+                    d="M5.2 1.2H1.2v4M8.8 12.8h4v-4M12.8 1.2 8.6 5.4M1.2 12.8l4.2-4.2"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </span>
             </button>
