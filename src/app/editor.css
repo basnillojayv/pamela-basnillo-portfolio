@@ -154,10 +154,16 @@
 }
 
 /* --- The sign-in panel at /edit -------------------------------------------
-   Deliberately borrows .form, .field and .btn wholesale rather than dressing
-   itself differently. A client who signs in here should recognise the same
-   site they are about to edit — a login screen that looks like a separate
-   product is how /admin got to feel like somewhere else. */
+   A client who signs in here should recognise the same site they are about to
+   edit — a login screen that looks like a separate product is how an admin
+   panel gets to feel like somewhere else.
+
+   The shipped stylesheet borrowed .form, .field and .btn from the host site,
+   which is right when the host has them. This one is built from Tailwind
+   utilities and has no such component classes, so the panel rendered with a
+   bare browser input and an unstyled button — the client's first impression of
+   the tool, looking broken. They are defined here instead, scoped under
+   .edit-login so nothing global is claimed and no site class is shadowed. */
 /* 80px clear above the panel, so the sign-in sits away from the header rather
    than tucked under it. Applied to the holding line too, or the panel would
    jump down the moment the "are you already signed in?" answer arrives.
@@ -172,7 +178,32 @@
 .edit-login__title{font-family:var(--font-display, inherit);font-weight:400;font-size:2.2rem;
   color:var(--brand-dark, #262A28);letter-spacing:normal;line-height:1.15;margin-bottom:.6rem}
 .edit-login__lede{color:var(--muted, #5A625E);line-height:1.6;margin-bottom:1.6rem}
-.edit-login .form__note{text-align:left;margin-top:1.2rem}
+.edit-login .form{display:flex;flex-direction:column;gap:1rem}
+.edit-login .field{display:flex;flex-direction:column;gap:.4rem}
+.edit-login .field label{font-family:var(--font-cond, inherit);font-weight:600;font-size:.82rem;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--muted, #5A625E)}
+.edit-login .field input{font:inherit;font-size:1rem;width:100%;padding:.85rem 1rem;
+  color:var(--brand-dark, #262A28);background:var(--surface-100, #FBFAF7);
+  border:1.5px solid var(--line, #DDD7CB);border-radius:11px;
+  transition:border-color .18s,background .18s,box-shadow .18s}
+.edit-login .field input:focus{border-color:var(--accent, #00708F);background:#fff;outline:none;
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--accent, #00708F) 12%,transparent)}
+
+.edit-login .btn{font:inherit;font-family:var(--font-cond, inherit);font-weight:600;font-size:1rem;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+  padding:.9rem 1.4rem;border:1.5px solid transparent;border-radius:var(--radius-pill, 100px);
+  color:#fff;background:var(--brand-dark, #262A28);
+  transition:background .18s,border-color .18s,transform .12s}
+.edit-login .btn:hover:not(:disabled){background:var(--accent, #00708F)}
+.edit-login .btn:active:not(:disabled){transform:scale(.985)}
+.edit-login .btn:disabled{opacity:.55;cursor:default}
+.edit-login .btn--block{width:100%}
+
+/* Errors read as a problem, not as decoration: the accent is used everywhere
+   else on this panel, so the message needs its own weight instead. */
+.edit-login .form__error{font-size:.9rem;font-weight:600;color:#a12b12;margin:0}
+.edit-login .form__note{text-align:left;margin-top:1.2rem;font-size:.86rem;line-height:1.55;
+  color:var(--muted-light, #6B736E)}
 
 /* Holding line while "are you already signed in?" is answered. Centred on the
    same axis as the panel it replaces, so the swap does not jump. */
