@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { navLinks, profile } from "@/lib/content";
+import { navLinks, profile, sections } from "@/lib/content";
 import Logo from "./Logo";
 
 export default function Nav() {
@@ -44,7 +44,12 @@ export default function Nav() {
           href="#top"
           className="-my-2 flex min-h-11 items-center pr-2 transition-opacity duration-200 hover:opacity-70"
         >
-          <span className="sr-only">{profile.name} — home</span>
+          {/* Skipped: the editor matches on text, and this invisible copy of
+              the name comes first in the document — it would swallow a binding
+              meant for something on screen. */}
+          <span className="sr-only" data-edit-skip>
+            {profile.name} — home
+          </span>
           <Logo markClassName="h-6 w-6 sm:h-7 sm:w-7" textClassName="text-[0.72rem] sm:text-[0.8rem]" />
         </a>
 
@@ -57,7 +62,11 @@ export default function Nav() {
                 href={l.href}
                 className="group relative flex items-center px-3 py-3 transition-colors duration-200 hover:text-coral"
               >
-                {l.label}
+                {/* Every nav label repeats a section heading, and this list
+                    renders twice over. Left editable, the nav link would
+                    consume the heading's binding and the heading would quietly
+                    stop responding. */}
+                <span data-edit-skip>{l.label}</span>
                 <span
                   aria-hidden
                   className="absolute inset-x-3 bottom-2 h-px origin-left scale-x-0 bg-coral transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:scale-x-100"
@@ -71,7 +80,7 @@ export default function Nav() {
           href={`mailto:${profile.email}`}
           className="ml-auto hidden min-h-11 items-center rounded-full border border-ink px-4 py-2.5 text-[0.9rem] transition-[background-color,color,transform] duration-200 ease-[var(--ease-out-quart)] hover:bg-ink hover:text-page active:scale-[0.97] md:ml-0 md:inline-flex"
         >
-          Email me
+          {sections.nav.emailLabel}
         </a>
 
         <button
@@ -124,7 +133,7 @@ export default function Nav() {
                     style={{ animationDelay: `${60 + i * 55}ms` }}
                     className="animate-rise flex items-baseline gap-4 py-5 font-display text-[clamp(2.1rem,11vw,3rem)] leading-none tracking-[-0.028em]"
                   >
-                    {l.label}
+                    <span data-edit-skip>{l.label}</span>
                   </a>
                 </li>
               ))}
@@ -137,12 +146,16 @@ export default function Nav() {
               onClick={handleClose}
               className="flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full border border-ink bg-ink px-6 text-[1rem] text-page transition-transform duration-200 ease-[var(--ease-out-quart)] active:scale-[0.98]"
             >
-              Email me
+              {sections.nav.emailLabel}
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
                 <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
-            <p className="mt-4 text-center text-[0.9rem] text-ink-soft">
+            {/* Inside a closed <dialog>. The tree walker still visits hidden
+                subtrees, so without this the only editable "Davao City,
+                Philippines" on the page would be one nobody can see — the
+                visible one in Contact would never get a turn. */}
+            <p className="mt-4 text-center text-[0.9rem] text-ink-soft" data-edit-skip>
               {profile.phone} · {profile.location}
             </p>
           </div>

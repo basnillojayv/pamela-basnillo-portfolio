@@ -1,9 +1,11 @@
 import Image from "next/image";
-import { profile } from "@/lib/content";
+import { profile, sections } from "@/lib/content";
 
+/* The icons are JSX, so this array stays here — only the three labels are
+   read from content. */
 const details = [
   {
-    label: "Email",
+    label: sections.contact.emailLabel,
     value: profile.email,
     href: `mailto:${profile.email}`,
     icon: (
@@ -11,7 +13,7 @@ const details = [
     ),
   },
   {
-    label: "Phone",
+    label: sections.contact.phoneLabel,
     value: profile.phone,
     href: `tel:${profile.phoneHref}`,
     icon: (
@@ -25,7 +27,7 @@ const details = [
     ),
   },
   {
-    label: "Based in",
+    label: sections.contact.locationLabel,
     value: profile.location,
     href: null,
     icon: (
@@ -44,20 +46,17 @@ export default function Contact() {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-end lg:gap-16">
           <div>
             <h2 className="max-w-[14ch] text-[clamp(2.25rem,7.2vw,4rem)]">
-              Work with me
+              {sections.contact.heading}
             </h2>
             <p className="mt-6 max-w-[46ch] text-[1.08rem] leading-[1.7] text-ink-soft">
-              Send me what&rsquo;s on your plate right now — the posts you keep
-              putting off, the system nobody has written down, the feed that
-              stopped looking like you. I&rsquo;ll come back with what I&rsquo;d
-              take on first.
+              {sections.contact.body}
             </p>
 
             <a
               href={`mailto:${profile.email}`}
               className="mt-9 inline-flex items-center gap-2.5 rounded-full border border-ink bg-ink px-7 py-3.5 text-[1.02rem] text-page transition-[background-color,color,transform] duration-200 ease-[var(--ease-out-quart)] hover:bg-coral hover:border-coral active:scale-[0.97]"
             >
-              Email Pamela
+              {sections.contact.cta}
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
                 <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -106,7 +105,7 @@ export default function Contact() {
               style={{ "--tilt": "-6deg" } as React.CSSProperties}
             >
               <Image src="/doodle/smiley.webp" alt="" width={18} height={18} className="doodle-ink h-[1.05em] w-[1.05em]" />
-              Let&rsquo;s talk
+              {sections.contact.aside}
             </span>
           </div>
         </div>

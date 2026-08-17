@@ -7,6 +7,8 @@ import type { WorkImage } from "@/lib/content";
 type Props = {
   reels: WorkImage[];
   onOpen: (index: number) => void;
+  /** Content path prefix, so each poster can declare itself to the editor. */
+  editKeyPrefix?: string;
   /** Milliseconds each reel holds before advancing. */
   interval?: number;
 };
@@ -71,7 +73,7 @@ function ReelVideo({ src, poster, alt }: { src: string; poster: string; alt: str
   );
 }
 
-export default function ReelCarousel({ reels, onOpen, interval = 4200 }: Props) {
+export default function ReelCarousel({ reels, onOpen, editKeyPrefix, interval = 4200 }: Props) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [active, setActive] = useState(0);
 
@@ -208,6 +210,7 @@ export default function ReelCarousel({ reels, onOpen, interval = 4200 }: Props) 
                 <ReelVideo src={reel.video} poster={reel.src} alt={reel.alt} />
               ) : (
                 <Image
+                  data-edit-key={editKeyPrefix ? `${editKeyPrefix}.${i}.src` : undefined}
                   src={reel.src}
                   alt={reel.alt}
                   fill

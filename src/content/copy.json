@@ -1,0 +1,462 @@
+{
+  "profile": {
+    "name": "Pamela Basnillo",
+    "role": "Creative marketing & virtual support strategist",
+    "line": "I don’t just make things look good — I make them work.",
+    "email": "basnillo.pamela@gmail.com",
+    "phone": "+63 933 850 5382",
+    "phoneHref": "+639338505382",
+    "location": "Davao City, Philippines"
+  },
+  "about": {
+    "lead": "I help brands grow through strategic content, streamlined systems, and design that carries its own weight.",
+    "body": [
+      {
+        "text": "My background runs across social media marketing, graphic design, client coordination, and virtual support — which means I sit in the gap between the creative side and the operations side, and I’m comfortable on both."
+      },
+      {
+        "text": "When ideas need structure around them, I build it: a content plan with a calendar behind it, a workflow someone else can pick up, a set of assets that look like they belong together."
+      }
+    ],
+    "practice": [
+      {
+        "text": "Scroll-stopping content built on a strategy, not a trend"
+      },
+      {
+        "text": "Workflows and SOPs a new hire could follow on day one"
+      },
+      {
+        "text": "Digital platforms and backend systems, managed and tidy"
+      },
+      {
+        "text": "AI used where it saves real time — ideas, research, first drafts"
+      }
+    ],
+    "motto": [
+      {
+        "text": "Create strategically."
+      },
+      {
+        "text": "Automate intelligently."
+      },
+      {
+        "text": "Execute efficiently."
+      }
+    ]
+  },
+  "services": [
+    {
+      "title": "Social media management",
+      "icon": "/icon/social.webp",
+      "items": [
+        {
+          "text": "Strategy & content planning"
+        },
+        {
+          "text": "Content scheduling"
+        },
+        {
+          "text": "Caption writing"
+        },
+        {
+          "text": "Performance reporting"
+        }
+      ]
+    },
+    {
+      "title": "Graphic design",
+      "icon": "/icon/design.webp",
+      "items": [
+        {
+          "text": "Social media graphics"
+        },
+        {
+          "text": "Carousel posts"
+        },
+        {
+          "text": "Brand assets"
+        },
+        {
+          "text": "Presentation decks"
+        }
+      ]
+    },
+    {
+      "title": "Marketing support",
+      "icon": "/icon/marketing.webp",
+      "items": [
+        {
+          "text": "Email marketing"
+        },
+        {
+          "text": "Content marketing"
+        },
+        {
+          "text": "Basic SEO"
+        },
+        {
+          "text": "Campaign support"
+        }
+      ]
+    },
+    {
+      "title": "Systems & operations",
+      "icon": "/icon/systems.webp",
+      "items": [
+        {
+          "text": "Airtable, ClickUp & Notion"
+        },
+        {
+          "text": "SOP creation"
+        },
+        {
+          "text": "Workflow organization"
+        },
+        {
+          "text": "Project coordination"
+        }
+      ]
+    },
+    {
+      "title": "Virtual assistance",
+      "icon": "/icon/assistance.webp",
+      "items": [
+        {
+          "text": "Email & calendar management"
+        },
+        {
+          "text": "Data entry & research"
+        },
+        {
+          "text": "CRM & database updates"
+        },
+        {
+          "text": "Administrative support"
+        }
+      ]
+    },
+    {
+      "title": "AI & content support",
+      "icon": "/icon/ai.webp",
+      "items": [
+        {
+          "text": "AI-assisted content creation"
+        },
+        {
+          "text": "Content repurposing"
+        },
+        {
+          "text": "Research assistance"
+        },
+        {
+          "text": "Productivity optimization"
+        }
+      ]
+    }
+  ],
+  "collections": [
+    {
+      "title": "Bakery brand refresh",
+      "meta": "Social media design · Visual identity",
+      "blurb": "A well-loved bakery changed direction and their Instagram hadn’t caught up. I rebuilt the feed around one palette, one type system and one voice, so a croissant explainer and a customer review read as the same shop.",
+      "images": [
+        {
+          "src": "/work/bakery-01.webp",
+          "alt": "Father’s Day post: a father lifting a laughing child, set against a deep red panel",
+          "w": 800,
+          "h": 667
+        },
+        {
+          "src": "/work/bakery-02.webp",
+          "alt": "Birthday post: a slice of chocolate cake with raspberries, captioned Eat Cake",
+          "w": 800,
+          "h": 667
+        },
+        {
+          "src": "/work/bakery-03.webp",
+          "alt": "Order-now post for a sharing quiche, shot from overhead on a wooden board",
+          "w": 800,
+          "h": 667
+        },
+        {
+          "src": "/work/bakery-04.webp",
+          "alt": "Bao bun promo cut from torn paper, framed as a quick and easy meal",
+          "w": 800,
+          "h": 667
+        },
+        {
+          "src": "/work/bakery-05.webp",
+          "alt": "Moody coffee post: steam rising from a cup, captioned Life happens, coffee helps",
+          "w": 800,
+          "h": 667
+        },
+        {
+          "src": "/work/bakery-06.webp",
+          "alt": "Rice paper rolls order post on a deep red background",
+          "w": 800,
+          "h": 667
+        },
+        {
+          "src": "/work/bakery-07.webp",
+          "alt": "Fruit tart post with a hand-drawn pastry pattern behind it",
+          "w": 800,
+          "h": 667
+        },
+        {
+          "src": "/work/bakery-08.webp",
+          "alt": "Five-star customer review laid out with oversized quote marks",
+          "w": 800,
+          "h": 667
+        },
+        {
+          "src": "/work/bakery-09.webp",
+          "alt": "Anatomy of a croissant: a cut croissant annotated with hand-drawn callouts",
+          "w": 800,
+          "h": 667
+        }
+      ]
+    },
+    {
+      "title": "Infinity Ark, Singapore",
+      "meta": "Social media design · Ongoing client",
+      "blurb": "Recognition posts, seminar invites and event announcements for a Singapore financial advisory team, held to one house style across the whole run.",
+      "images": [
+        {
+          "src": "/work/ark-01.webp",
+          "alt": "Team announcement post: agents on a lilac stage set, agency name in cut-out type",
+          "w": 279,
+          "h": 372
+        },
+        {
+          "src": "/work/ark-02.webp",
+          "alt": "Second team announcement in the same lilac cut-out series",
+          "w": 279,
+          "h": 372
+        },
+        {
+          "src": "/work/ark-03.webp",
+          "alt": "Third team announcement in the same lilac cut-out series",
+          "w": 279,
+          "h": 372
+        },
+        {
+          "src": "/work/ark-04.webp",
+          "alt": "Top Producers, June 2026 — three advisors on a soft gradient",
+          "w": 279,
+          "h": 372
+        },
+        {
+          "src": "/work/ark-05.webp",
+          "alt": "MDRT 2026 qualifier feature with Japan travel motifs",
+          "w": 279,
+          "h": 372
+        },
+        {
+          "src": "/work/ark-06.webp",
+          "alt": "Top Producers, July 2025 — two advisors on a violet gradient",
+          "w": 279,
+          "h": 372
+        },
+        {
+          "src": "/work/ark-07.webp",
+          "alt": "Will & legacy planning seminar invite with speakers, agenda and venue",
+          "w": 279,
+          "h": 372
+        },
+        {
+          "src": "/work/ark-08.webp",
+          "alt": "Chile qualifiers congratulations post with plane and globe illustrations",
+          "w": 640,
+          "h": 800
+        },
+        {
+          "src": "/work/ark-09.webp",
+          "alt": "Funky Loud Awards Night 2026 invite in acid green and magenta",
+          "w": 640,
+          "h": 800
+        }
+      ]
+    },
+    {
+      "title": "Post ads",
+      "meta": "Wellness · Beauty · Food · Retail",
+      "blurb": "Ad creative for brands across wellness, beauty, coaching, real estate, food and retail. Every one has a single job: make the offer legible in the half-second before a thumb moves.",
+      "images": [
+        {
+          "src": "/work/ad-01.webp",
+          "alt": "Eye drop ad on a cloud backdrop, captioned Enhance your vision naturally",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-02.webp",
+          "alt": "Blood sugar supplement ad: a woman drinking a glass of water, captioned Lower your blood sugar in every sip",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-03.webp",
+          "alt": "Sleep supplement ad on a cloud backdrop, captioned Promotes relaxation and sleep",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-04.webp",
+          "alt": "Barley coffee ad captioned Bitterness got you brewing?, mug beside the sachet pack",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-05.webp",
+          "alt": "Eye serum ad: a model applying serum, captioned Tanggal wrinkles and looking younger",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-06.webp",
+          "alt": "Eye drop ad: three bottles above a cloud horizon, captioned Newer and improved Opticare eye drops",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-07.webp",
+          "alt": "Sunblock ad: a model in yellow holding the jar, captioned Chok-Chok Skin Goals",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-08.webp",
+          "alt": "Cooking oil ad in yellow and black sale type, captioned ₱18 per meal, less oil more laman",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-09.webp",
+          "alt": "Effervescent supplement ad with a four-point absorption breakdown",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-10.webp",
+          "alt": "Bridal sunblock ad: a bride in a veil, captioned A bride’s essential for perfect wedding day skin",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-11.webp",
+          "alt": "Sunscreen ad for athletes: a runner mid-stride on a blue field, captioned Sunarmor",
+          "w": 800,
+          "h": 800
+        },
+        {
+          "src": "/work/ad-12.webp",
+          "alt": "Men’s serum ad: a model in a black suit, captioned Boost your confidence",
+          "w": 800,
+          "h": 800
+        }
+      ]
+    },
+    {
+      "title": "Short-form video",
+      "meta": "Reels · TikTok · Stories",
+      "blurb": "Vertical edits for property tours, restaurant launches and beauty services, captioned so they read with the sound off.",
+      "images": [
+        {
+          "src": "/work/reel-01.webp",
+          "video": "/work/reel-01.mp4",
+          "alt": "Samgyupsal reel: raw beef and greens on a tabletop grill, unlimited sides callout",
+          "w": 406,
+          "h": 720
+        },
+        {
+          "src": "/work/reel-02.webp",
+          "video": "/work/reel-02.mp4",
+          "alt": "Restaurant grand opening reel with the date and address set over the venue signage",
+          "w": 406,
+          "h": 720
+        },
+        {
+          "src": "/work/reel-03.webp",
+          "video": "/work/reel-03.mp4",
+          "alt": "Workday reel: a woman working at a tablet in soft daylight",
+          "w": 406,
+          "h": 720
+        },
+        {
+          "src": "/work/reel-04.webp",
+          "video": "/work/reel-04.mp4",
+          "alt": "Hair extensions reel captioned Transform your look instantly",
+          "w": 406,
+          "h": 720
+        },
+        {
+          "src": "/work/reel-05.webp",
+          "video": "/work/reel-05.mp4",
+          "alt": "Property walkthrough reel: split frames of a renovated kitchen and living room",
+          "w": 406,
+          "h": 720
+        }
+      ]
+    },
+    {
+      "title": "Brand identity",
+      "meta": "Logo · Palette · Type · Mood",
+      "blurb": "A full identity board for Be A Blessing: mark, color palette, typeface and mood board, in one document.",
+      "images": [
+        {
+          "src": "/work/brand-board.webp",
+          "alt": "Be A Blessing identity board: a dove-and-olive-branch mark, an olive and sage color palette, the Kiona typeface specimen and a mood board of greens and neutrals",
+          "w": 1000,
+          "h": 1414
+        }
+      ]
+    }
+  ],
+  "sections": {
+    "hero": {
+      "greeting": "Hi — I’m Pamela.",
+      "intro": "I work with entrepreneurs and growing brands who need the creative and the operational handled by the same person.",
+      "takeALook": "Take a look",
+      "entrances": [
+        {
+          "copy": "Five collections, from a bakery rebrand to a Singapore advisory team."
+        },
+        {
+          "copy": "What I take on: content, design, systems, backend support."
+        },
+        {
+          "copy": "Tell me what’s on your plate. I’ll tell you what I’d take off it."
+        }
+      ]
+    },
+    "about": {
+      "eyebrow": "About",
+      "practiceHeading": "What that looks like in practice",
+      "aside": "Three steps, in that order. Strategy first, because automating a bad process just makes it fail faster."
+    },
+    "services": {
+      "eyebrow": "Services",
+      "intro": "Six things I take on — on their own, or together as one running system."
+    },
+    "tools": {
+      "eyebrow": "Tools I work in",
+      "note": "Plus the whole of Google Workspace — Gmail, Calendar, Drive, Docs, Sheets, Slides and Meet."
+    },
+    "work": {
+      "eyebrow": "Selected work",
+      "intro": "Designs made for businesses across wellness, beauty, coaching, real estate, food, retail and personal branding. Open anything here to see it full size."
+    },
+    "contact": {
+      "heading": "Work with me",
+      "body": "Send me what’s on your plate right now — the posts you keep putting off, the system nobody has written down, the feed that stopped looking like you. I’ll come back with what I’d take on first.",
+      "cta": "Email Pamela",
+      "aside": "Let’s talk",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "locationLabel": "Based in"
+    },
+    "nav": {
+      "emailLabel": "Email me"
+    }
+  }
+}

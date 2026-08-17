@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { disciplines, profile } from "@/lib/content";
+import { disciplines, profile, sections } from "@/lib/content";
 import HeroMedia from "./HeroMedia";
 
 const toneClass = {
@@ -8,11 +8,17 @@ const toneClass = {
   sky: "bg-sky",
 } as const;
 
+/**
+ * The titles stay here rather than moving into copy.json with the rest of the
+ * words: each one duplicates a nav label exactly, and the editor binds an
+ * editable string to whichever text node comes first in the document — which
+ * is always the nav. Only the blurb travels.
+ */
 const entrances = [
-  { href: "#work", title: "Work", copy: "Five collections, from a bakery rebrand to a Singapore advisory team.", icon: "/icon/design.webp", tone: "bg-blossom" },
-  { href: "#services", title: "Services", copy: "What I take on: content, design, systems, backend support.", icon: "/icon/systems.webp", tone: "bg-sage" },
-  { href: "#contact", title: "Contact", copy: "Tell me what’s on your plate. I’ll tell you what I’d take off it.", icon: "/icon/assistance.webp", tone: "bg-sky" },
-];
+  { href: "#work", title: "Work", icon: "/icon/design.webp", tone: "bg-blossom" },
+  { href: "#services", title: "Services", icon: "/icon/systems.webp", tone: "bg-sage" },
+  { href: "#contact", title: "Contact", icon: "/icon/assistance.webp", tone: "bg-sky" },
+].map((entrance, i) => ({ ...entrance, copy: sections.hero.entrances[i].copy }));
 
 export default function Hero() {
   return (
@@ -28,7 +34,7 @@ export default function Hero() {
               className="animate-rise font-hand text-[1.35rem] text-ink-soft"
               style={{ animationDelay: "40ms" }}
             >
-              Hi — I&rsquo;m Pamela.
+              {sections.hero.greeting}
             </p>
 
             <h1
@@ -51,9 +57,7 @@ export default function Hero() {
               className="animate-rise mt-5 max-w-[46ch] text-[1.0625rem] text-ink-soft"
               style={{ animationDelay: "240ms" }}
             >
-              {profile.role}, based in {profile.location}. I work with entrepreneurs
-              and growing brands who need the creative and the operational handled
-              by the same person.
+              {profile.role}, based in {profile.location}. {sections.hero.intro}
             </p>
 
             <ul
@@ -111,12 +115,17 @@ export default function Hero() {
                 {/* Deliberately not a heading: these three link to sections
                     whose real <h2>s appear below, and duplicating them here
                     put "Work / Services / Contact" in the outline twice. */}
-                <p className="font-display text-[1.4rem] leading-tight tracking-[-0.028em]">
+                {/* Skipped, not the whole card: the blurb below is editable and
+                    unique, but these three titles repeat the nav labels. */}
+                <p
+                  className="font-display text-[1.4rem] leading-tight tracking-[-0.028em]"
+                  data-edit-skip
+                >
                   {e.title}
                 </p>
                 <p className="text-[0.95rem] leading-relaxed text-ink-soft">{e.copy}</p>
                 <span className="mt-auto inline-flex items-center gap-1.5 pt-3 text-[0.9rem] font-medium text-coral">
-                  Take a look
+                  {sections.hero.takeALook}
                   <svg
                     width="15"
                     height="15"

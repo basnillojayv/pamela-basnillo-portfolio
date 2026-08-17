@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { toolGroups } from "@/lib/content";
+import { sections, toolGroups } from "@/lib/content";
 import Reveal from "./Reveal";
 
 /**
@@ -28,12 +28,11 @@ export default function Tools() {
       className="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 sm:py-20"
     >
       <h2 id="tools-heading" className="text-[clamp(1.9rem,4.5vw,2.5rem)]">
-        Tools I work in
+        {sections.tools.eyebrow}
       </h2>
 
       <p className="mx-auto mt-4 max-w-[46ch] text-[1rem] leading-relaxed text-ink-soft">
-        Plus the whole of Google Workspace — Gmail, Calendar, Drive, Docs,
-        Sheets, Slides and Meet.
+        {sections.tools.note}
       </p>
 
       <Image

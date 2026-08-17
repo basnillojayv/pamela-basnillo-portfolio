@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { services } from "@/lib/content";
+import { sections, services } from "@/lib/content";
 import Reveal from "./Reveal";
 
 export default function Services() {
@@ -7,10 +7,9 @@ export default function Services() {
     <section id="services" className="scroll-mt-28 border-y border-ink/15 bg-sky">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <h2 className="text-[clamp(2.25rem,6vw,3.25rem)]">Services</h2>
+          <h2 className="text-[clamp(2.25rem,6vw,3.25rem)]">{sections.services.eyebrow}</h2>
           <p className="max-w-[42ch] text-[1.02rem] leading-relaxed text-ink-soft">
-            Six things I take on — on their own, or together as one running
-            system.
+            {sections.services.intro}
           </p>
         </div>
 
@@ -21,9 +20,12 @@ export default function Services() {
           stagger={55}
           className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {services.map((s) => (
+          {services.map((s, i) => (
             <li key={s.title} className="group flex gap-4">
+              {/* Declares itself so the icon picker can find it — an image has
+                  no text to match on. */}
               <Image
+                data-edit-key={`copy.services.${i}.icon`}
                 src={s.icon}
                 alt=""
                 width={56}

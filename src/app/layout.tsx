@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Fraunces, Hanken_Grotesk, Caveat } from "next/font/google";
 import "./globals.css";
+// Its own file rather than rules pasted into globals.css, so updating the
+// editor later never means picking them back out of the site's own styles.
+// Every custom property in it has a fallback, so it needs nothing from @theme.
+import "./editor.css";
+import { EditorMount } from "./components/EditorMount";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -77,6 +82,11 @@ export default function RootLayout({
         <noscript>
           <style>{`[data-reveal] > * { opacity: 1 !important; }`}</style>
         </noscript>
+        {/* Renders nothing for a visitor: its one request comes back
+            {"canEdit":false} and no editor code is rendered at all. Last in the
+            body so the toolbar lands at the end of tab order rather than
+            between the skip link and the page. */}
+        <EditorMount />
       </body>
     </html>
   );

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { collections, type Collection } from "@/lib/content";
+import { collections, sections, type Collection } from "@/lib/content";
 import Lightbox from "./Lightbox";
 import ReelCarousel from "./ReelCarousel";
 import Reveal from "./Reveal";
@@ -33,15 +33,24 @@ const gridClass = {
 
 function Gallery({
   collection,
+  index,
   onOpen,
 }: {
   collection: Collection;
+  /** Position in `collections`, which is what the editor addresses images by. */
+  index: number;
   onOpen: (i: number) => void;
 }) {
   // Reels are the one collection that behaves like playback rather than a
   // contact sheet, so it gets a carousel instead of a grid.
   if (collection.layout === "reel") {
-    return <ReelCarousel reels={collection.images} onOpen={onOpen} />;
+    return (
+      <ReelCarousel
+        reels={collection.images}
+        editKeyPrefix={`copy.collections.${index}.images`}
+        onOpen={onOpen}
+      />
+    );
   }
 
   return (
@@ -53,7 +62,10 @@ function Gallery({
           onClick={() => onOpen(i)}
           className={`group relative block w-full overflow-hidden rounded-2xl border border-ink transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-0.5 active:scale-[0.99] ${aspectClass[collection.layout]}`}
         >
+          {/* Photographs carry no text to match on, so they declare themselves.
+              The key is the same content path the editor's endpoint reports. */}
           <Image
+            data-edit-key={`copy.collections.${index}.images.${i}.src`}
             src={img.src}
             alt={img.alt}
             fill
@@ -76,11 +88,9 @@ export default function Work() {
   return (
     <section id="work" className="scroll-mt-28">
       <div className="mx-auto max-w-6xl px-4 pb-2 pt-16 sm:px-6 sm:pt-20">
-        <h2 className="text-[clamp(2.25rem,6vw,3.25rem)]">Selected work</h2>
+        <h2 className="text-[clamp(2.25rem,6vw,3.25rem)]">{sections.work.eyebrow}</h2>
         <p className="mt-5 max-w-[58ch] text-[1.05rem] leading-[1.7] text-ink-soft">
-          Designs made for businesses across wellness, beauty, coaching, real
-          estate, food, retail and personal branding. Open anything here to see
-          it full size.
+          {sections.work.intro}
         </p>
       </div>
 
@@ -118,6 +128,7 @@ export default function Work() {
                 <div className={flip ? "lg:col-start-1 lg:row-start-1" : ""}>
                   <Gallery
                     collection={c}
+                    index={i}
                     onOpen={(index) => setOpenIn({ id: c.id, index })}
                   />
                 </div>
