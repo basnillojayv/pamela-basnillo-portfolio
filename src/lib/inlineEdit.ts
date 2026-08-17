@@ -2,49 +2,25 @@ import 'server-only'
 import { idForPath } from '@/lib/media'
 
 /**
- * Support for the in-place editor.
+ * The walk that decides what is editable, and what kind of thing it is.
  *
- * The site already has an admin panel, and everything here is editable there
- * too. This exists because "click the sentence and change it" is a different
- * thing from "find the right field in a form" — and for the person who actually
+ * This exists because "click the sentence and change it" is a different thing
+ * from "find the right field in a form" — and for the person who actually
  * writes the copy, it is the difference between updating the site and asking
  * someone to.
  *
- * HOW IT DIFFERS FROM THE TEMPLATE VERSION
- * The starter this came from keeps its copy in committed files and stores only
- * a client's overrides, so it has committed defaults to fall back to and Reset
- * means "delete the override". Here, Payload *is* the source of truth. There is
- * nothing underneath to revert to, and the globals carry no drafts — so an edit
- * saved here is live immediately, exactly as it would be from the admin panel.
- * The toolbar says Save rather than Publish for that reason.
+ * WHY A SCHEMA RATHER THAN A LOOK AT THE VALUES
+ * A field is prose because the schema says so, never because the string looked
+ * like prose. Content is full of enums that read as plain English — a layout
+ * discriminator holding "board", a colour key holding "sage". Made editable,
+ * the word could be typed over and written back into something the code
+ * branches on. See contentSchema.ts.
+ *
+ * Nothing here is tied to any CMS despite the field vocabulary: `walkFields`
+ * takes any object shaped like FieldLike, which is what lets a hand-written
+ * schema drive it.
  */
 
-/**
- * Which content prefix belongs to which global.
- */
-export const GLOBALS = {
-  homepage: 'homepage',
-} as const
-
-export type EditablePrefix = keyof typeof GLOBALS
-
-/**
- * And which belongs to which collection.
- *
- * Empty in the starter, because the only collections here are Media and Users —
- * an upload store and an account table, neither of which holds prose. Add the
- * content collections a site actually grows: on EPD Land this reads
- *
- *     projects: 'projects', units: 'units', updates: 'project-updates',
- *
- * A document is addressed by id — `projects.3.tagline` — because a collection
- * has many and the page is showing particular ones. Keep the prefix a single
- * plain word even where the slug is hyphenated; it is a path segment, and the
- * key stays readable.
- */
-export const COLLECTIONS = {} as const
-
-export type CollectionPrefix = keyof typeof COLLECTIONS
 
 /**
  * Field names that are never body copy — they point somewhere, key something,
@@ -86,7 +62,7 @@ function eligible(key: string, value: string): boolean {
 }
 
 
-/** Merge several globals into the one map the browser receives. */
+/** Merge several collected maps into the one the browser receives. */
 export function mergeEditable(...maps: Record<string, string>[]): Record<string, string> {
   return Object.assign({}, ...maps)
 }
@@ -99,7 +75,7 @@ export function mergeEditable(...maps: Record<string, string>[]): Record<string,
  * have to be declared — and the components mark themselves with the matching
  * `data-edit-key`.
  *
- * These are read out of the Payload field config rather than listed here.
+ * These come from the schema rather than being listed here.
  * A list would be a second place to remember, and it would already be wrong:
  * writing one by hand missed `heroPoster` (an upload that is not called an
  * image) and both of the about page's nested galleries. The schema cannot
@@ -127,7 +103,7 @@ export type IconRegion = {
 export type Region = ImageRegion | IconRegion
 
 /**
- * The shape of a Payload field, narrowed to what this walk needs. Payload's own
+ * The shape of a schema field, narrowed to what this walk needs. A CMS's own
  * `Field` union is far wider, and matching it exactly here would mean naming
  * every variant only to ignore most of them.
  */
@@ -147,7 +123,7 @@ const humanize = (name: string) =>
     .toLowerCase()
     .replace(/^./, (c) => c.toUpperCase())
 
-/** Payload accepts `['a','b']` or `[{label,value}]`. Normalise to the latter. */
+/** Accepts `['a','b']` or `[{label,value}]`. Normalise to the latter. */
 function normaliseOptions(options: unknown): { label: string; value: string }[] {
   if (!Array.isArray(options)) return []
   return options.flatMap((option) => {
@@ -163,14 +139,14 @@ function normaliseOptions(options: unknown): { label: string; value: string }[] 
 }
 
 /**
- * An upload field's value at `depth: 0` is the id — but a global read at any
- * depth may hand back the whole document instead, so accept both.
+ * An upload field's value may be an id, a public path, or a populated
+ * document, depending on where the content came from. Accept all three.
  */
 function mediaId(value: unknown): number | null {
   if (typeof value === 'number') return value
   if (typeof value === 'string' && /^\d+$/.test(value)) return Number(value)
   /**
-   * This site stores a public path where Payload stored a row id, so hash it
+   * A file-backed site stores a public path where a CMS stored a row id, so hash it
    * to the same numeric space the picker works in. Tested after the numeric
    * branch above so a stray "14" still behaves as an id rather than a path.
    *
@@ -187,10 +163,10 @@ function mediaId(value: unknown): number | null {
 }
 
 /**
- * Walk a global's fields and data together, collecting the images and icons.
+ * Walk the schema and the data together, collecting the images and icons.
  *
  * `row`, `collapsible` and unnamed `tabs` are presentational — they group
- * fields in the admin panel and add nothing to the stored shape — so they are
+ * fields for display and add nothing to the stored shape — so they are
  * stepped through without extending the path. Groups, named tabs and arrays do
  * add a segment, and an array adds one per row, which is what makes
  * `homepage.heroFacts.2.icon` addressable at all.
@@ -205,11 +181,11 @@ function mediaId(value: unknown): number | null {
  * "office", which is six characters of prose as far as a name list is
  * concerned, and is really one of a fixed set of values. Made editable, the
  * word "office" anywhere on the page could be typed over and written back into
- * an enum. Extending to the collections would have added more of the same —
+ * an enum. Wider content models add more of the same —
  * `unitType` is a select reading "Residential lot".
  *
  * So a field is prose when the schema says it is: `text` or `textarea`, and
- * nothing else. That also drops Payload's own bookkeeping (`globalType`, `id`,
+ * nothing else. That also drops any bookkeeping fields (`id`,
  * timestamps) without needing to name any of it.
  */
 export function collectEditable(
@@ -268,7 +244,7 @@ export function collectEditable(
       }
 
       /**
-       * Only fields actually named `icon`. Every select in these globals that
+       * Only fields actually named `icon`. Every select that
        * picks a glyph is called that, and widening it to all selects would drag
        * in statuses and other choices that are not pictures of anything.
        */
@@ -286,7 +262,7 @@ export function collectEditable(
       /**
        * Prose. Rich text is not here on purpose: its value is a Lexical
        * document, not a string, so it could never match a text node on the page
-       * nor be written back from one. It stays in the admin panel, which has a
+       * nor be written back from one. It stays wherever it is authored, which has a
        * proper editor for it.
        */
       if (field.type === 'text' || field.type === 'textarea') {
