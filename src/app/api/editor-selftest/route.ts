@@ -142,6 +142,66 @@ export async function GET() {
     )
   }
 
+  // 9b. a freshly uploaded path is accepted by shape, since it has no id yet
+  {
+    const doc = fresh()
+    const uploaded = '/work/new-photo-a1b2c3d4.webp'
+    const n = applyEdits(doc, [{ key: 'copy.collections.0.images.0.src', value: uploaded }])
+    check(
+      'uploaded path accepted',
+      n === 1 && at(doc, 'collections.0.images.0.src') === uploaded,
+      `count=${n}`,
+    )
+  }
+
+  // 9c. and anything that is not that exact shape is not
+  {
+    const doc = fresh()
+    const n = applyEdits(
+      doc,
+      [
+        '/etc/passwd',
+        '/work/../../secret.webp',
+        '/work//evil.webp',
+        '/other/photo-1234.webp',
+        '/work/script.svg',
+        'https://evil.example/x.webp',
+        '/work/UPPER-1234.webp',
+      ].map((value) => ({ key: 'copy.collections.0.images.0.src', value })),
+    )
+    check(
+      'malformed upload paths refused',
+      n === 0 && JSON.stringify(doc) === JSON.stringify(copy),
+      `count=${n}`,
+    )
+  }
+
+  // 9d. alt for a just-uploaded photograph lands, via the swap in the same batch
+  {
+    const doc = fresh()
+    const uploaded = '/work/new-photo-a1b2c3d4.webp'
+    const n = applyEdits(doc, [
+      { key: 'copy.collections.2.images.1.src', value: uploaded },
+      { key: `media.${idForPath(uploaded)}.alt`, value: 'A new description' },
+    ])
+    check(
+      'alt lands on a just-uploaded photo',
+      n === 2 && at(doc, 'collections.2.images.1.alt') === 'A new description',
+      `count=${n} alt=${at(doc, 'collections.2.images.1.alt')}`,
+    )
+  }
+
+  // 9e. an alt whose id matches nothing on the page writes nothing
+  {
+    const doc = fresh()
+    const n = applyEdits(doc, [{ key: 'media.4242424.alt', value: 'nowhere' }])
+    check(
+      'orphan alt writes nothing',
+      n === 0 && JSON.stringify(doc) === JSON.stringify(copy),
+      `count=${n}`,
+    )
+  }
+
   // 10. positive control: a legitimate batch still applies in full
   {
     const doc = fresh()

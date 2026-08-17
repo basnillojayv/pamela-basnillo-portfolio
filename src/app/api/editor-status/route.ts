@@ -42,6 +42,22 @@ function altByMediaId(): Map<number, string> {
 }
 
 /**
+ * A heading for the picker panel.
+ *
+ * The walk labels a region from its field name, which for an image field named
+ * `src` produces "Src" — true, and useless to the person looking at it. The
+ * key knows which collection the photograph belongs to, so use that instead.
+ */
+function labelForImage(key: string): string {
+  const match = /^copy\.collections\.(\d+)\.images\.(\d+)\.src$/.exec(key)
+  if (!match) return 'Photograph'
+
+  const collection = copy.collections[Number(match[1])]
+  const position = Number(match[2]) + 1
+  return collection ? `${collection.title} — photograph ${position}` : 'Photograph'
+}
+
+/**
  * Two content paths holding the same string cannot both be edited: the surface
  * matches on text content and gives each node one path in document order, so
  * the second occurrence binds to whichever path came first.
@@ -103,7 +119,11 @@ export async function GET() {
      */
     const regions: Region[] = collected.regions.map((region) =>
       region.kind === 'image'
-        ? { ...region, alt: region.mediaId === null ? '' : (alts.get(region.mediaId) ?? '') }
+        ? {
+            ...region,
+            alt: region.mediaId === null ? '' : (alts.get(region.mediaId) ?? ''),
+            label: labelForImage(region.key),
+          }
         : region,
     )
 

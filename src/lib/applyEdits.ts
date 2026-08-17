@@ -2,6 +2,7 @@ import copy from '@/content/copy.json'
 import { collectEditable, setPath } from '@/lib/inlineEdit'
 import { contentSchema } from '@/lib/contentSchema'
 import { MEDIA_BY_ID, idForPath } from '@/lib/media'
+import { isUploadablePath } from '@/lib/uploads'
 
 export type Edit = { key: string; value: string | number }
 
@@ -31,12 +32,16 @@ const allowedKeys: Set<string> = (() => {
  * Is this key one the editor is allowed to write?
  *
  * `media.<id>.alt` is the exception: it is synthesised by the picker rather
- * than derived from the schema, so it is checked by shape and against the
- * known media instead.
+ * than derived from the schema, so it is admitted on shape alone. It is not
+ * checked against the known media, because a photograph uploaded moments ago
+ * is not in the manifest yet — that is regenerated at build time.
+ *
+ * Letting it through costs nothing, because the fan-out in pass 3 *is* the
+ * authorisation: it only ever writes `alt` beside a `src` the document already
+ * holds. An id matching nothing on the page writes nothing.
  */
 function permitted(key: string): boolean {
-  const alt = MEDIA_ALT.exec(key)
-  if (alt) return MEDIA_BY_ID.has(Number(alt[1]))
+  if (MEDIA_ALT.test(key)) return true
   return allowedKeys.has(key)
 }
 
@@ -88,12 +93,28 @@ export function applyEdits(doc: Record<string, unknown>, edits: Edit[]): number 
     if (setPath(doc, edit.key.split('.').slice(1), String(edit.value))) applied += 1
   }
 
-  // 2. Photograph swaps. The picker stages a numeric media id; the document
-  //    holds a public path, so translate before writing.
+  /**
+   * 2. Photograph swaps, in either of the two forms the picker produces.
+   *
+   * Choosing one already on the site stages its numeric media id, which is
+   * translated to the path the document holds. Choosing one just uploaded
+   * stages the path directly — it has no id yet, because ids come from the
+   * manifest and that is rebuilt with the site.
+   *
+   * The path form is checked by shape rather than against known media, for the
+   * same reason; see isUploadablePath, which is deliberately strict about it.
+   */
   for (const edit of edits) {
     if (!edit.key.endsWith('.src')) continue
-    const url = MEDIA_BY_ID.get(Number(edit.value))?.url
-    if (!url) continue // unknown id: write nothing, count nothing
+
+    const url =
+      typeof edit.value === 'string' && edit.value.startsWith('/')
+        ? isUploadablePath(edit.value)
+          ? edit.value
+          : undefined
+        : MEDIA_BY_ID.get(Number(edit.value))?.url
+
+    if (!url) continue // unknown id or unusable path: write nothing, count nothing
     if (setPath(doc, edit.key.split('.').slice(1), url)) applied += 1
   }
 

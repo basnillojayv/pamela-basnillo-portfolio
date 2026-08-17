@@ -1,7 +1,8 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useEdit, type Region } from './EditProvider'
+import { idForPath } from '@/lib/media'
 import { Icon } from './Icon'
 
 /**
@@ -32,10 +33,33 @@ export function EditPicker() {
   const edit = useEdit()
   const editing = Boolean(edit?.editing)
   const regions = edit?.regions
-  const media = edit?.media ?? []
+  const serverMedia = edit?.media ?? []
 
   const [open, setOpen] = useState<Region | null>(null)
   const [spots, setSpots] = useState<{ region: Region; top: number; left: number }[]>([])
+
+  const fileRef = useRef<HTMLInputElement>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
+  /**
+   * Photographs added during this session.
+   *
+   * They cannot come from the server payload: the picker's list is built from
+   * the media manifest, which is regenerated when the site rebuilds. Until
+   * that happens the file exists in the repository but nothing here knows its
+   * name, so it is held locally and shown alongside the rest.
+   */
+  const [added, setAdded] = useState<
+    {
+      id: number
+      alt: string
+      url: string
+      filename: string
+      /** A blob URL. The real one 404s until the site rebuilds. */
+      preview: string
+      isNew: true
+    }[]
+  >([])
 
   /**
    * Mark every region that is on this page, and keep a badge over each one.
@@ -155,20 +179,85 @@ export function EditPicker() {
   /** What is currently chosen: the staged value if there is one, else what is saved. */
   const stagedValue = edit.pending[open.key]?.value
 
-  const chooseImage = (id: number | string, url: string) => {
-    edit.stage({ key: open.key, value: Number(id) })
+  /**
+   * Everything offerable: this session's uploads first, then the site's own.
+   * `preview` is what separates the two — a blob URL exists only for a file
+   * whose real path is committed but not yet deployed.
+   */
+  type Choice = { id: number | string; alt: string; url: string; filename: string; preview?: string }
+  const media: Choice[] = [...added, ...serverMedia]
+
+  /**
+   * A photograph already on the site is staged as its numeric media id. One
+   * uploaded a moment ago has no id yet — ids come from the manifest, which is
+   * rebuilt with the site — so its path is staged directly, and the save path
+   * accepts that form for exactly this reason.
+   */
+  const chooseImage = (item: { id: number | string; url: string; preview?: string }) => {
+    edit.stage({ key: open.key, value: item.preview ? item.url : Number(item.id) })
 
     // Show it at once, in whichever way this particular image is rendered.
+    // The blob preview for an upload, since the real path is not deployed yet.
+    const shown = item.preview ?? item.url
     const el = document.querySelector<HTMLElement>(`[data-edit-key="${open.key}"]`)
-    if (el instanceof HTMLImageElement) el.src = url
-    else el?.style.setProperty('--img', `url('${url}')`)
+    if (el instanceof HTMLImageElement) el.src = shown
+    else el?.style.setProperty('--img', `url('${shown}')`)
+  }
+
+  const onUpload = async (file: File) => {
+    setUploadError(null)
+    setUploading(true)
+
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer())
+      // In chunks: spreading a few million bytes into fromCharCode at once
+      // overflows the argument limit and throws on exactly the large photograph
+      // someone is most likely to pick.
+      let binary = ''
+      for (let i = 0; i < bytes.length; i += 0x8000) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
+      }
+
+      const response = await fetch('/api/editor-upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: file.name, data: btoa(binary) }),
+      })
+
+      const body = await response.json().catch(() => null)
+      if (!response.ok || typeof body?.url !== 'string') {
+        setUploadError(body?.error ?? 'That photograph could not be added.')
+        return
+      }
+
+      const entry = {
+        id: idForPath(body.url),
+        alt: '',
+        url: body.url,
+        filename: body.url.slice(body.url.lastIndexOf('/') + 1),
+        preview: URL.createObjectURL(file),
+        isNew: true as const,
+      }
+
+      // Re-uploading the same file gives the same path, since the name carries
+      // a content hash — so replace rather than accumulate duplicates.
+      setAdded((list) => [entry, ...list.filter((item) => item.url !== entry.url)])
+      chooseImage(entry)
+    } catch {
+      setUploadError('That photograph could not be added.')
+    } finally {
+      setUploading(false)
+      if (fileRef.current) fileRef.current.value = ''
+    }
   }
 
   const currentMediaId =
     open.kind === 'image'
-      ? stagedValue !== undefined
-        ? Number(stagedValue)
-        : open.mediaId
+      ? stagedValue === undefined
+        ? open.mediaId
+        : typeof stagedValue === 'string' && stagedValue.startsWith('/')
+          ? idForPath(stagedValue)
+          : Number(stagedValue)
       : null
 
   const selected = media.find((item) => Number(item.id) === currentMediaId)
@@ -221,6 +310,40 @@ export function EditPicker() {
                 </p>
               )}
 
+              {/**
+                * Uploading commits the file to the site's own repository —
+                * there is no separate store for images here. It lands as its
+                * own commit, before Save, because the editor needs a real URL
+                * to point at before the choice can be staged.
+                */}
+              <div className="edit-pick__upload">
+                <input
+                  ref={fileRef}
+                  id="edit-pick-upload"
+                  type="file"
+                  accept="image/webp,image/png,image/jpeg,image/avif"
+                  disabled={uploading}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0]
+                    if (file) void onUpload(file)
+                  }}
+                />
+                <label className="btn btn--pill" htmlFor="edit-pick-upload">
+                  {uploading ? 'Adding…' : 'Add a photograph'}
+                </label>
+
+                {uploadError ? (
+                  <p className="edit-pick__note edit-pick__note--error" role="alert">
+                    {uploadError}
+                  </p>
+                ) : (
+                  <p className="edit-pick__note">
+                    JPEG, PNG, WebP or AVIF, up to 8MB. It is added to the site straight away and
+                    stays available for anything else on the page.
+                  </p>
+                )}
+              </div>
+
               <ul className="edit-pick__grid">
                 {media.map((item) => {
                   const active = Number(item.id) === currentMediaId
@@ -228,14 +351,14 @@ export function EditPicker() {
                     <li key={item.id}>
                       <button
                         className={`edit-pick__shot${active ? ' is-on' : ''}`}
-                        onClick={() => chooseImage(item.id, item.url)}
+                        onClick={() => chooseImage(item)}
                         aria-pressed={active}
                       >
                         {/* Deliberately a plain picture element: these are 480px
                             thumbnails already, and routing them through the
                             optimizer to show them at 100px is work for nothing. */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={item.url} alt={item.alt} loading="lazy" />
+                        <img src={item.preview ?? item.url} alt={item.alt} loading="lazy" />
                       </button>
                     </li>
                   )
@@ -259,13 +382,6 @@ export function EditPicker() {
                 </div>
               )}
 
-              {/* There is no upload path on this site: photographs are part of
-                  the repository. Saying so is better than pointing at an admin
-                  panel that does not exist. */}
-              <p className="edit-pick__note">
-                These are the photographs already on the site. Adding a new one is a change to the
-                site itself — ask your developer.
-              </p>
             </>
           )}
 
