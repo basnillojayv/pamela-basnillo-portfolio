@@ -2,21 +2,22 @@
 
 import { getEditor } from '@/lib/editorAuth'
 import { applyEdits, type Edit } from '@/lib/applyEdits'
+import { editorBranch, editorRepo } from '@/lib/editorRepo'
 
 export type { Edit }
 
 type Result = { ok: true; count: number; sha?: string } | { ok: false; error: string }
 
 /**
- * Where the content lives. None of this is secret, so it stays in the source
- * rather than becoming three more environment variables to misconfigure.
+ * Where the content lives.
+ *
+ * The repository and branch are Vercel's to know, not yours to configure — see
+ * lib/editorRepo.ts. EDITOR_REPO and EDITOR_BRANCH remain as overrides.
  */
-const REPO = process.env.EDITOR_REPO ?? 'basnillojayv/pamela-basnillo-portfolio'
-const BRANCH = process.env.EDITOR_BRANCH ?? 'main'
-const FILE = 'src/content/copy.json'
+const FILE = process.env.EDITOR_CONTENT_FILE ?? 'src/content/copy.json'
 
 const api = (path: string, init?: RequestInit) =>
-  fetch(`https://api.github.com/repos/${REPO}/${path}`, {
+  fetch(`https://api.github.com/repos/${editorRepo()}/${path}`, {
     ...init,
     cache: 'no-store',
     headers: {
@@ -41,7 +42,7 @@ type Loaded = { doc: Record<string, unknown>; sha: string }
  * blob sha the write needs.
  */
 async function load(): Promise<Loaded | { error: string }> {
-  const response = await api(`contents/${FILE}?ref=${BRANCH}`)
+  const response = await api(`contents/${FILE}?ref=${editorBranch()}`)
 
   if (response.status === 401 || response.status === 403) {
     return { error: 'The publishing key was rejected. It may have expired.' }
@@ -69,8 +70,9 @@ async function load(): Promise<Loaded | { error: string }> {
 /**
  * Apply a batch of edits and publish them.
  *
- * Publishing means committing the content file to `main`; the repository's
- * existing deploy carries it to the live site, about a minute later. There is
+ * Publishing means committing the content file to the branch this deployment
+ * was built from; the repository's existing deploy carries it to the live site,
+ * about a minute later. There is
  * no staging step, which is why the button still says Save.
  */
 export async function saveEdits(edits: Edit[]): Promise<Result> {
@@ -85,6 +87,13 @@ export async function saveEdits(edits: Edit[]): Promise<Result> {
 
   if (!process.env.GITHUB_TOKEN) {
     return { ok: false, error: 'Publishing is not set up on this site yet.' }
+  }
+
+  if (!editorRepo()) {
+    return {
+      ok: false,
+      error: 'Could not work out which repository to save to. Set EDITOR_REPO.',
+    }
   }
 
   /**
@@ -118,7 +127,7 @@ export async function saveEdits(edits: Edit[]): Promise<Result> {
         message,
         content: Buffer.from(next, 'utf8').toString('base64'),
         sha: loaded.sha,
-        branch: BRANCH,
+        branch: editorBranch(),
       }),
     })
 
